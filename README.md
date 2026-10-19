@@ -78,6 +78,10 @@ this presenter repository, not the original site.
   page overflow at widths 1366, 1440, 768, 375 or 320.
 - [x] Browser checks: timeline, Back/Next, autoplay/pause, restart, persona changes,
   keyboard disclosures and returning to normal mode.
+- [x] `node --check app.js`, `node --check touchpoints.js` and `git diff --check`.
+- [x] Secret scans pass; CodeQL reports zero JavaScript alerts. The bundled
+  automated review runner was unavailable; a separate read-only review found
+  no issues.
 
 Local Chromium used the system-font fallback because Google Fonts could not be
 resolved in the validation environment. No JavaScript errors were reported;
