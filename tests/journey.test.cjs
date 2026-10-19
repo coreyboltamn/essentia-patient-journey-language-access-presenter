@@ -24,7 +24,8 @@ function journey() {
       this.style = { setProperty() {} };
       this.dataset = {};
     }
-    set innerHTML(value) { this.children = []; }
+    set innerHTML(value) { this.markup = value; this.children = []; }
+    get innerHTML() { return this.markup; }
     set id(value) { this.key = value; elements.set(value, this); }
     get id() { return this.key; }
     appendChild(child) { this.children.push(child); }
@@ -55,6 +56,16 @@ function journey() {
     tick: () => tick(),
   };
 }
+
+test("every scenario card labels its language as Preferred language", () => {
+  const app = journey();
+  const cards = app.el("scenarioGrid").children;
+  assert.equal(cards.length, personas.length);
+  personas.forEach((persona, index) => {
+    assert.ok(cards[index].innerHTML.includes(`<strong>Preferred language:</strong> ${persona.language}`));
+    assert.doesNotMatch(cards[index].innerHTML, /primary communication/i);
+  });
+});
 
 test("live-demo callout, markers, styles, data and handlers are removed", () => {
   assert.doesNotMatch(html, /liveDemo|live-demo|demo-marker|Presenter handoff|Pause journey for live demo/);
