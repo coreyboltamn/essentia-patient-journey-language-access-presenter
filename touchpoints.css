@@ -1,0 +1,23 @@
+/* Common touchpoint highlighting tied to the active timeline stage */
+.touchpoint-card { transition: opacity 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease; }
+.touchpoint-card.phase-idle { opacity: 0.55; }
+.touchpoint-card.phase-active { opacity: 1; transform: translateY(-2px); box-shadow: 0 10px 24px rgba(60, 40, 140, 0.18); }
+.touchpoint-card li { transition: opacity 0.3s ease, background 0.3s ease; border-radius: 6px; }
+.touchpoint-card li.tp-dim { opacity: 0.45; }
+.touchpoint-card li.tp-active {
+  opacity: 1;
+  font-weight: 800;
+  background: rgba(108, 62, 180, 0.12);
+  padding: 0.1rem 0.4rem;
+  margin-left: -0.4rem;
+  animation: tpPulse 1.6s ease-in-out infinite;
+}
+.touchpoint-card.pre li.tp-active { background: rgba(79, 163, 220, 0.2); }
+.touchpoint-card.post li.tp-active { background: rgba(0, 141, 149, 0.16); }
+@keyframes tpPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(108, 62, 180, 0.35); }
+  50% { box-shadow: 0 0 0 5px rgba(108, 62, 180, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .touchpoint-card li.tp-active { animation: none; }
+}
