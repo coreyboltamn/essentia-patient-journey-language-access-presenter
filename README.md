@@ -1,9 +1,17 @@
-# essentia-patient-journey-language-access
+# essentia-patient-journey-language-access-presenter
 
-Microsite demo for Essentia + AMN patient journey language access workflows.
+Presenter copy of the Essentia + AMN patient journey language access microsite.
+Baseline copied from
+[`coreyboltamn/essentia-patient-journey-language-access` at `2f12f2a`](https://github.com/coreyboltamn/essentia-patient-journey-language-access/commit/2f12f2a325f9232ba30b65f3e2db11802cce7a95).
+All four personas, seven stages, solution mappings, descriptions and badge wording
+are retained. Changes and deployment belong to this presenter repository only;
+the original repository and its Pages settings are not changed.
 
-## Live site
-https://coreyboltamn.github.io/essentia-patient-journey-language-access/
+## Presenter deployment
+
+If GitHub Pages is enabled for this repository, its expected URL is
+https://coreyboltamn.github.io/essentia-patient-journey-language-access-presenter/.
+Deployment is not configured or verified by this change.
 
 ## Screen-sharing presentations
 
@@ -13,18 +21,36 @@ navigation, stage details and AMN connections remain available.
 
 ### Presenter workflow
 
-1. Enable **Presentation Mode** for screen sharing. It hides the hero and
-   collapses the scenario cards and touchpoint lists, keeping timeline navigation
-   compact at laptop sizes. **Choose / change** always
-   shows the current persona and opens the scenario choices; **Common touchpoints**
-   opens supporting detail. Both are keyboard-accessible disclosure controls.
-   Leaving Presentation Mode expands these controls again. Other stage and
-   solution content remains available below; nothing is fixed-height.
+1. Enable **Presentation Mode** for screen sharing. It hides the hero, collapses
+   supporting sections and places active-stage details beside highlighted AMN
+   connections on laptop screens. The patient moment, what happens at this step,
+   highlighted solution labels and persona badges remain visible.
+   **Choose / change** shows the current persona and opens the scenario choices;
+   **Common touchpoints**, **People and outcomes**, and
+   **All options, descriptions and safety notes** reveal supporting content.
+   All disclosures work with keyboard Enter/Space. Close them after reviewing
+   supporting content to return to the compact view. Leaving Presentation Mode
+   expands all four disclosures and restores full connection cards.
 2. Walk the spine or use **Back** and **Next** to explore each stage.
    **Auto-play** advances the journey; **Pause** stops it.
 3. Scenario selection, direct timeline selection, Back, Next and Restart stop
    autoplay. Restart returns to the first scenario and first step.
    Normal stage progression does not scroll the page.
+
+### Viewport expectations
+
+- At 100% browser zoom, all 28 persona/stage combinations fit without vertical
+  page scrolling at **1366×768** and **1440×900 CSS-pixel content viewports**,
+  with supporting disclosures closed.
+- At **768×900**, the panels stack; the longest states require a little vertical
+  scrolling. At **375×812** and **320×568**, readable stacked content requires
+  vertical scrolling. Only the timeline scrolls horizontally; it is a named,
+  keyboard-focusable region. The header is not sticky on phone widths.
+- Opening disclosures, enlarged text, browser zoom or a shorter content viewport
+  can require scrolling. Content remains in normal flow: no fixed-height clipping,
+  forced scaling, or locked page scrolling. Browser chrome and screen-sharing
+  toolbars reduce available space, so choose the larger share area when possible.
+- Normal browsing starts with Presentation Mode off and supporting content open.
 
 Use fictional data for any separate demonstration. Scheduling and telehealth
 examples are configured illustrative workflows, not proof of live deployments.
@@ -40,8 +66,31 @@ autoplay, restart, presentation-mode disclosures, AMN connection mapping, ASL an
 nonclinical AI safeguards. There is no build step.
 Repeat the browser checks below when changing the journey controls.
 
-**Merge this PR and complete GitHub Pages deployment to update the public site.**
-No live technology integration is added.
+No live technology integration is added. Publishing this copy requires deploying
+this presenter repository, not the original site.
+
+### Presenter validation
+
+- [x] Copied baseline: all 22 original Node tests and `node --check app.js` pass.
+- [x] Presenter regression suite: 23 tests pass, including disclosure reopening,
+  mode toggling without journey changes, every persona/stage mapping and labels.
+- [x] Chromium: all 28 states fit at both laptop viewport sizes above; no horizontal
+  page overflow at widths 1366, 1440, 768, 375 or 320.
+- [x] Browser checks: timeline, Back/Next, autoplay/pause, restart, persona changes,
+  keyboard disclosures and returning to normal mode.
+
+Local Chromium used the system-font fallback because Google Fonts could not be
+resolved in the validation environment. No JavaScript errors were reported;
+the inherited missing favicon also returned 404. Font metrics and other browsers
+may change wrapping, so verify the actual sharing setup before presenting.
+
+## Inherited source notes
+
+The following baseline documentation describes the original site's content and
+history. Historical test counts, reviews and Pages deployment IDs below refer
+to the source repository, not a deployment of this presenter copy.
+In compact Presentation Mode, non-highlighted cards and all descriptions are
+available through **All options, descriptions and safety notes**.
 
 ## AMN solution connections
 
@@ -198,7 +247,7 @@ Only the timeline intentionally scrolls sideways.
 
 This is a static HTML/CSS/JavaScript site using Node's built-in test runner,
 with no build dependencies. Serve the repository with a static server and check
-under `/essentia-patient-journey-language-access/`, not just at `/`.
+under `/essentia-patient-journey-language-access-presenter/`, not just at `/`.
 To repeat the checks in a browser:
 
 1. Check 1366×768 and 1440×900 laptops, plus widths 768, 375 and 320 pixels.

@@ -472,6 +472,8 @@ presentationMode.addEventListener("change", () => {
   body.classList.toggle("presentation-mode", presentationMode.checked);
   document.getElementById("scenarioPicker").open = !presentationMode.checked;
   document.getElementById("touchpointDetails").open = !presentationMode.checked;
+  document.getElementById("stageDetails").open = !presentationMode.checked;
+  document.getElementById("connectionDetails").open = !presentationMode.checked;
 });
 populateScenarioCards();
 buildNodes();

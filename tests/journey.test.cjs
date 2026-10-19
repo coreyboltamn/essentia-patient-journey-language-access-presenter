@@ -247,7 +247,37 @@ test("presentation mode still collapses and restores support controls without ch
     app.el("presentationMode").handlers.change();
     assert.equal(app.el("scenarioPicker").open, !checked);
     assert.equal(app.el("touchpointDetails").open, !checked);
+    assert.equal(app.el("stageDetails").open, !checked);
+    assert.equal(app.el("connectionDetails").open, !checked);
     assert.equal(app.state().pIndex, 1);
     assert.equal(app.state().sIndex, 3);
   }
+});
+
+test("presenter supporting disclosures can reopen without changing stage or connection content", () => {
+  const app = journey();
+  app.el("scenarioGrid").children[3].click();
+  app.node(4).click();
+  const cards = app.el("connectionGrid").children;
+  app.el("presentationMode").checked = true;
+  app.el("presentationMode").handlers.change();
+  for (const id of ["scenarioPicker", "touchpointDetails", "stageDetails", "connectionDetails"]) {
+    assert.equal(app.el(id).open, false);
+    app.el(id).open = true;
+  }
+  assert.equal(app.state().pIndex, 3);
+  assert.equal(app.state().sIndex, 4);
+  assert.equal(app.el("connectionGrid").children, cards);
+  app.el("nextBtn").click();
+  for (const id of ["scenarioPicker", "touchpointDetails", "stageDetails", "connectionDetails"]) {
+    assert.equal(app.el(id).open, true);
+  }
+  assert.equal(app.state().pIndex, 3);
+  assert.equal(app.state().sIndex, 5);
+  assert.deepEqual(
+    app.el("connectionGrid").children.map((card) => card.dataset.solutionId),
+    Array.from(connectionsFor(stages[5], "joanna"), ({ id }) => id),
+  );
+  assert.match(html, /<details id="stageDetails" open>\s*<summary>People and outcomes<\/summary>/);
+  assert.match(html, /<details id="connectionDetails" open>\s*<summary>All options, descriptions and safety notes<\/summary>/);
 });

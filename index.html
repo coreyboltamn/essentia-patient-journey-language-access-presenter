@@ -33,7 +33,7 @@
         </div>
       </section>
 
-      <section class="panel">
+      <section class="panel scenario-panel">
         <details id="scenarioPicker" open>
           <summary>Patient scenario · <span id="scenarioName"></span> · Choose / change</summary>
           <div class="scenario-grid" id="scenarioGrid"></div>
@@ -89,7 +89,7 @@
           </div>
         </details>
 
-        <div class="track-wrap">
+        <div class="track-wrap" role="region" aria-label="Patient journey timeline; scroll horizontally for all stages" tabindex="0">
           <div class="track" id="track">
             <div class="track-line"><div class="track-fill" id="trackFill"></div></div>
             <div class="avatar" id="avatar" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><circle cx="12" cy="8" r="4" fill="#fff"/><path d="M4 21c0-5 4-7 8-7s8 2 8 7" fill="#fff"/></svg></div>
@@ -114,15 +114,24 @@
 
         <div class="cards-row">
           <article><h3>What happens at this step</h3><ul id="behindList"></ul></article>
-          <article><h3>Who is involved</h3><ul id="whoList"></ul></article>
-          <article><h3>Outcome for patient and Essentia</h3><ul id="outcomeList"></ul></article>
+          <details id="stageDetails" open>
+            <summary>People and outcomes</summary>
+            <div class="support-cards">
+              <article><h3>Who is involved</h3><ul id="whoList"></ul></article>
+              <article><h3>Outcome for patient and Essentia</h3><ul id="outcomeList"></ul></article>
+            </div>
+          </details>
         </div>
       </section>
 
-      <section class="panel">
+      <section class="panel connections-panel">
         <h2>AMN connection points at this step</h2>
         <p class="connection-context" id="connectionContext"></p>
-        <p class="connection-note">Illustrative examples only; availability depends on configured services, accessibility and local workflows. No live integrations or automatic Epic synchronization are demonstrated. AI translation/live speech does not replace qualified interpreters for consent, clinical decisions or other high-risk communication; written clinical materials need appropriate qualified review.</p>
+        <p class="presenter-note">Illustrative workflows only. AI does not replace qualified interpreters; clinical translations require qualified review.</p>
+        <details id="connectionDetails" open>
+          <summary>All options, descriptions and safety notes</summary>
+          <p class="connection-note">Illustrative examples only; availability depends on configured services, accessibility and local workflows. No live integrations or automatic Epic synchronization are demonstrated. AI translation/live speech does not replace qualified interpreters for consent, clinical decisions or other high-risk communication; written clinical materials need appropriate qualified review.</p>
+        </details>
         <div class="connection-grid" id="connectionGrid"></div>
       </section>
 

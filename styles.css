@@ -353,6 +353,17 @@ button {
   gap: 0.6rem;
 }
 
+.cards-row > details {
+  grid-column: span 2;
+}
+
+.support-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+
 .cards-row article {
   border: 1px solid #d8e5f4;
   border-radius: 10px;
@@ -461,6 +472,95 @@ footer {
   padding: 0.75rem;
 }
 
+.presenter-note {
+  display: none;
+}
+
+.presentation-mode main {
+  display: grid;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.presentation-mode .panel {
+  min-width: 0;
+  margin: 0;
+  padding: 0.65rem;
+}
+
+.presentation-mode .cards-row,
+.presentation-mode .connection-grid {
+  grid-template-columns: 1fr;
+}
+
+.presentation-mode .cards-row > details {
+  grid-column: auto;
+}
+
+.presentation-mode .presenter-note {
+  display: block;
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+}
+
+.presentation-mode #connectionDetails:not([open]) ~ .connection-grid .connection-card:not(.connection-preferred),
+.presentation-mode #connectionDetails:not([open]) ~ .connection-grid .connection-card p {
+  display: none;
+}
+
+.presentation-mode #connectionDetails:not([open]) ~ .connection-grid .connection-preferred {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.presentation-mode .connection-card h3 {
+  flex: 1;
+  min-width: 0;
+  font-size: 1rem;
+}
+
+.presentation-mode .connection-badge {
+  margin: 0;
+}
+
+#connectionDetails {
+  margin-bottom: 0.6rem;
+}
+
+.presentation-mode .impact-band {
+  margin: 0;
+}
+
+.presentation-mode footer {
+  padding: 0 0.8rem 0.5rem;
+}
+
+.presentation-mode footer p {
+  margin: 0;
+}
+
+@media (min-width: 680px) {
+  .presentation-mode #connectionDetails:not([open]) ~ .connection-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  .presentation-mode main {
+    max-width: 1440px;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .presentation-mode .scenario-panel,
+  .presentation-mode .journey-panel,
+  .presentation-mode .impact-band {
+    grid-column: 1 / -1;
+  }
+}
+
 .touchpoint-bands {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -517,9 +617,15 @@ footer {
   .connection-grid {
     grid-template-columns: 1fr;
   }
+  .cards-row > details {
+    grid-column: auto;
+  }
 }
 
 @media (max-width: 680px) {
+  .presentation-mode .topbar {
+    position: static;
+  }
   .topbar {
     flex-direction: column;
     align-items: flex-start;
@@ -528,6 +634,9 @@ footer {
     grid-template-columns: 1fr;
   }
   .touchpoint-bands {
+    grid-template-columns: 1fr;
+  }
+  .support-cards {
     grid-template-columns: 1fr;
   }
   .stage-top {
