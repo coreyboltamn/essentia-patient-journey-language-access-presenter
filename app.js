@@ -322,7 +322,7 @@ function populateScenarioCards() {
     card.innerHTML = `
       <div class="avatar-dot" aria-hidden="true"></div>
       <h3>${p.name}, ${p.age}</h3>
-      <p><strong>Primary communication:</strong> ${p.language}</p>
+      <p><strong>Preferred language:</strong> ${p.language}</p>
       <p>${p.situation}</p>
     `;
     card.addEventListener("click", () => {
