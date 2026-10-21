@@ -92,7 +92,7 @@ test("all personas' stage preferences use valid visible solution IDs", () => {
     ["vri-opi"],
     ["smart-tv", "vri-opi", "epic"],
     ["jaide"],
-    ["patient-line"],
+    ["patient-line", "epic", "jaide"],
   ], som: [
     ["patient-line"],
     ["in-person"],
@@ -134,6 +134,24 @@ test("all personas' stage preferences use valid visible solution IDs", () => {
   const { preferredConnections, ...unmappedStage } = stages[0];
   for (const persona of personas) {
     assert.ok(connectionsFor(unmappedStage, persona.id).every(({ preferred }) => preferred === false));
+  }
+});
+
+test("MyChart communication descriptions apply only to Maria's post-visit Epic and Jaide options", () => {
+  for (const [index, stage] of stages.entries()) {
+    for (const persona of personas) {
+      for (const card of connectionsFor(stage, persona.id)) {
+        const targeted = index === 6 && persona.id === "span" && ["epic", "jaide"].includes(card.id);
+        const original = stage.connections.find(({ id }) => id === card.id);
+        assert.equal(card.description.includes("Enable MyChart Communication"), targeted);
+        if (targeted) {
+          assert.equal(card.preferred, true);
+          assert.equal(card.description, `${original.description} Enable MyChart Communication`);
+        } else {
+          assert.equal(card.description, persona.id === "joanna" && original.asl ? original.asl : original.description);
+        }
+      }
+    }
   }
 });
 

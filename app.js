@@ -227,7 +227,7 @@ const stages = [
   {
     phase: "Post-Visit",
     title: "Post Visit & Ongoing Care",
-    preferredConnections: { span: ["patient-line"], som: ["patient-line"], tele: ["patient-line", "teladoc"], joanna: ["vri-opi", "mobile", "in-person"] },
+    preferredConnections: { span: ["patient-line", "epic", "jaide"], som: ["patient-line"], tele: ["patient-line", "teladoc"], joanna: ["vri-opi", "mobile", "in-person"] },
     icon: "🔄",
     patient: {
       span: "Maria receives follow-up outreach, answers medication questions, and stays connected through portal messaging in Spanish.",
@@ -251,8 +251,8 @@ const stages = [
       { id: "teladoc", personas: ["tele"], description: "Staff plan qualified interpreter participation for Tran’s ongoing virtual check-ins through the configured telehealth workflow for follow-up." },
       { id: "vri-opi", description: "Care managers involve a qualified video or phone interpreter when discussing recovery questions and next steps.", asl: "Care managers arrange qualified ASL interpretation by VRI for ongoing care discussions through a configured accessible video workflow." },
       { id: "mobile", description: "For follow-up, staff check the configured mobile access workflow with the patient before arranging a qualified remote interpreter.", asl: "For follow-up, staff check a configured accessible mobile video workflow with Joanna before arranging a qualified ASL interpreter; mobile access alone is not ASL interpretation." },
-      { id: "epic", description: "Care coordinators use the configured Epic follow-up workflow to document communication needs and interpreted outreach." },
-      { id: "jaide", description: "Staff prepare appropriate translated written follow-up messages for approval; clinical content requires appropriate qualified review, and clinical questions go to the care team with a qualified interpreter.", asl: null },
+      { id: "epic", description: "Care coordinators use the configured Epic follow-up workflow to document communication needs and interpreted outreach.", descriptionByPersona: { span: "Care coordinators use the configured Epic follow-up workflow to document communication needs and interpreted outreach. Enable MyChart Communication" } },
+      { id: "jaide", description: "Staff prepare appropriate translated written follow-up messages for approval; clinical content requires appropriate qualified review, and clinical questions go to the care team with a qualified interpreter.", descriptionByPersona: { span: "Staff prepare appropriate translated written follow-up messages for approval; clinical content requires appropriate qualified review, and clinical questions go to the care team with a qualified interpreter. Enable MyChart Communication" }, asl: null },
       { id: "in-person", personas: ["joanna"], description: "Care coordinators arrange a qualified in-person ASL interpreter for ongoing appointments and follow-up questions, subject to local scheduling and availability." },
     ],
     impact: "Ongoing interpreted engagement strengthens outcomes, loyalty, and operational learning.",
@@ -278,7 +278,7 @@ function connectionsFor(stage, personaKey) {
     .map((connection) => ({
       id: connection.id,
       label: solutionCatalog[connection.id],
-      description: personaKey === "joanna" && connection.asl ? connection.asl : connection.description,
+      description: personaKey === "joanna" && connection.asl ? connection.asl : connection.descriptionByPersona?.[personaKey] ?? connection.description,
       preferred: stage.preferredConnections?.[personaKey]?.includes(connection.id) ?? false,
     }));
 }

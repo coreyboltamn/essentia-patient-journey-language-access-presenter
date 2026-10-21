@@ -190,7 +190,7 @@ test(`${personaId} highlights follow navigation, autoplay, presentation mode and
   const app = journey();
   const expected = { span: [
     ["patient-line"], ["patient-line"], ["vri-opi"], ["vri-opi"],
-    ["smart-tv", "vri-opi", "epic"], ["jaide"], ["patient-line"],
+    ["smart-tv", "vri-opi", "epic"], ["jaide"], ["patient-line", "epic", "jaide"],
   ], som: [
     ["patient-line"], ["in-person"], ["in-person"], ["in-person"],
     ["smart-tv", "epic"], ["jaide"], ["patient-line"],
