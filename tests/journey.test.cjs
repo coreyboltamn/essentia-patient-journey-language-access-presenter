@@ -142,6 +142,28 @@ test("every scenario and timeline stage renders details and AMN mappings without
   });
 });
 
+test("Tran's virtual stages render exactly Telehealth with unbranded, qualified-interpreter copy", () => {
+  const app = journey();
+  app.el("scenarioGrid").children[personas.findIndex(({ id }) => id === "tele")].click();
+  for (const checked of [false, true]) {
+    app.el("presentationMode").checked = checked;
+    app.el("presentationMode").handlers.change();
+    for (const index of [1, 2, 3, 6]) {
+      app.node(index).click();
+      const cards = app.el("connectionGrid").children;
+      const telehealth = cards.filter((card) => card.dataset.solutionId === "teladoc");
+      assert.equal(telehealth.length, 1, stages[index].title);
+      assert.equal(telehealth[0].children[0].textContent, "Telehealth");
+      assert.equal(telehealth[0].children[1].textContent, "Tran");
+      assert.match(telehealth[0].children.at(-1).textContent, /configured telehealth workflow/);
+      assert.match(telehealth[0].children.at(-1).textContent, /qualified interpreter/);
+      for (const card of cards) {
+        assert.doesNotMatch(card.children.map((child) => child.textContent).join(" "), /teladoc/i);
+      }
+    }
+  }
+});
+
 test("Back, Next, scenario selection, timeline selection and restart stop autoplay", () => {
   for (const [navigate, expectedStage, expectedPersona] of [
     [(app) => app.el("nextBtn").click(), 2, 2],
