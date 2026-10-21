@@ -133,7 +133,9 @@ both normal and Presentation Mode.
 | Clinical Encounter | VRI/OPI |
 | Treatment / Inpatient Stay | Smart TV integration, VRI/OPI, Epic integration |
 | Discharge & Transition of Care | Jaide AI Translation and Live Speech (one combined catalog card) |
-| Post Visit & Ongoing Care | Patient Line |
+| Post Visit & Ongoing Care | Patient Line, Epic integration, Jaide AI Translation and Live Speech |
+
+Maria's post-visit Epic and Jaide descriptions also include “Enable MyChart Communication”.
 
 ### Abdi's highlighted connections
 
