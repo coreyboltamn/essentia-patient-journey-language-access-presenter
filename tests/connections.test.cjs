@@ -15,6 +15,7 @@ test("catalog contains the canonical solutions with stable IDs", () => {
   assert.deepEqual({ ...solutionCatalog }, {
     "vri-opi": "VRI/OPI",
     "in-person": "In-person Interpreter using Interpreter Scheduling tool",
+    "jaide-live-speech": "Jaide AI Live Speech",
     jaide: "Jaide AI Translation and Live Speech",
     teladoc: "Telehealth",
     epic: "Epic integration",
@@ -51,7 +52,8 @@ for (const persona of personas) {
       assert.ok(cards.length >= 2 && cards.length <= 6, stage.title);
       selections.add(cards.map(({ id }) => id).join(","));
       for (const card of cards) {
-        assert.equal(card.label, solutionCatalog[card.id]);
+        const connection = stage.connections.find(({ id }) => id === card.id);
+        assert.equal(card.label, connection.labelByPersona?.[persona.id] ?? solutionCatalog[card.id]);
         assert.doesNotMatch(`${card.label} ${card.description}`, /teladoc/i);
         assert.ok(card.description.length > 70, `${stage.title}: ${card.id}`);
         assert.doesNotMatch(card.description, /Connected to this step/);
@@ -88,7 +90,7 @@ test("all personas' stage preferences use valid visible solution IDs", () => {
   const expected = { span: [
     ["patient-line"],
     ["patient-line"],
-    ["vri-opi"],
+    ["jaide-live-speech"],
     ["vri-opi"],
     ["smart-tv", "vri-opi", "epic"],
     ["jaide"],
@@ -134,6 +136,21 @@ test("all personas' stage preferences use valid visible solution IDs", () => {
   const { preferredConnections, ...unmappedStage } = stages[0];
   for (const persona of personas) {
     assert.ok(connectionsFor(unmappedStage, persona.id).every(({ preferred }) => preferred === false));
+  }
+});
+
+test("Maria's check-in highlights Jaide AI Live Speech and her discharge label is Jaide AI Translation", () => {
+  const checkIn = stages.find(({ title }) => title === "Arrival & Check-In");
+  const discharge = stages.find(({ title }) => title === "Discharge & Transition of Care");
+  const mariaCheckIn = connectionsFor(checkIn, "span");
+  const speech = mariaCheckIn.find(({ id }) => id === "jaide-live-speech");
+  assert.equal(speech.label, "Jaide AI Live Speech");
+  assert.equal(speech.preferred, true);
+  assert.ok(!connectionsFor(checkIn, "som").some(({ id }) => id === "jaide-live-speech"));
+
+  assert.equal(connectionsFor(discharge, "span").find(({ id }) => id === "jaide").label, "Jaide AI Translation");
+  for (const persona of ["som", "tele", "joanna"]) {
+    assert.equal(connectionsFor(discharge, persona).find(({ id }) => id === "jaide").label, solutionCatalog.jaide);
   }
 });
 

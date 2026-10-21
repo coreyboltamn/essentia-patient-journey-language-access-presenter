@@ -129,10 +129,10 @@ both normal and Presentation Mode.
 | --- | --- |
 | Awareness & Access to Care | Patient Line |
 | Appointment Confirmation & Pre-Visit | Patient Line |
-| Arrival & Check-In | VRI/OPI |
+| Arrival & Check-In | Jaide AI Live Speech |
 | Clinical Encounter | VRI/OPI |
 | Treatment / Inpatient Stay | Smart TV integration, VRI/OPI, Epic integration |
-| Discharge & Transition of Care | Jaide AI Translation and Live Speech (one combined catalog card) |
+| Discharge & Transition of Care | Jaide AI Translation |
 | Post Visit & Ongoing Care | Patient Line, Epic integration, Jaide AI Translation and Live Speech |
 
 Maria's post-visit Epic and Jaide descriptions also include “Enable MyChart Communication”.
