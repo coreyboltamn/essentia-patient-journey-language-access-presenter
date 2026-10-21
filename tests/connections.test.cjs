@@ -226,3 +226,22 @@ test("Telehealth is tied to Tran's virtual stages and all clinical AI materials 
   assert.match(html, /AI translation\/live speech does not replace qualified interpreters/);
   assert.match(html, /availability depends on configured services/);
 });
+
+test("external video links are limited to Maria's Appointment and Discharge Jaide cards", () => {
+  const expected = {
+    "Appointment Confirmation & Pre-Visit": "https://www.youtube.com/watch?v=cQFljsXDylA&list=PL2nqsuaL4MUK7ZOcbzFeeTHJ8tJXyDerR&index=1",
+    "Discharge & Transition of Care": "https://www.youtube.com/watch?v=NE72LS-x-rs&list=PL2nqsuaL4MUK7ZOcbzFeeTHJ8tJXyDerR&index=2",
+  };
+  for (const stage of stages) {
+    for (const persona of personas) {
+      for (const card of connectionsFor(stage, persona.id)) {
+        const link = persona.id === "span" && card.id === "jaide" ? expected[stage.title] ?? null : null;
+        assert.equal(card.externalLink, link, `${persona.id} ${stage.title} ${card.id}`);
+      }
+    }
+  }
+  const discharge = connectionsFor(stages.find(({ title }) => title === "Discharge & Transition of Care"), "span")
+    .find(({ id }) => id === "jaide");
+  assert.equal(discharge.label, "Jaide AI Translation");
+  assert.equal(discharge.preferred, true);
+});

@@ -20,7 +20,7 @@ function journey() {
     constructor() {
       this.children = [];
       this.handlers = {};
-      this.classList = { toggle() {} };
+      this.classList = { toggle() {}, add: (name) => { this.className = `${this.className || ""} ${name}`.trim(); } };
       this.style = { setProperty() {} };
       this.dataset = {};
     }
@@ -43,8 +43,10 @@ function journey() {
     createElement: () => new Element(),
     getElementById(id) { return elements.get(id) || null; },
   };
+  const opened = [];
   const context = vm.createContext({
     document,
+    window: { open: (...args) => opened.push(args) },
     setInterval(callback) { tick = callback; return 1; },
     clearInterval() { tick = null; },
   });
@@ -54,6 +56,7 @@ function journey() {
     node: (index) => document.getElementById("nodes").children[index].children[0],
     state: () => vm.runInContext("({ pIndex, sIndex, auto })", context),
     tick: () => tick(),
+    opened,
   };
 }
 
@@ -152,7 +155,7 @@ test("Maria's connection cards render paired action lines without changing card 
       assert.equal(card.children.length, expected[cardIndex].preferred ? 3 : 2);
       assert.equal(card.children.at(-1).textContent, expected[cardIndex].description);
       assert.match(card.children.at(-1).textContent, /^Patient action: Maria .+\nEssentia action: .+$/);
-      assert.equal(card.handlers.click, undefined);
+      assert.equal(typeof card.handlers.click, expected[cardIndex].externalLink ? "function" : "undefined");
     });
   });
 });
@@ -390,8 +393,28 @@ test("Tran's Clinical Encounter Telehealth card opens the integrations modal", (
     for (const [sIndex, stage] of stages.entries()) {
       app.node(sIndex).click();
       for (const c of app.el("connectionGrid").children) {
-        assert.equal(/connection-clickable/.test(c.className), persona.id === "tele" && stage === stages[encounterIndex] && c.dataset.solutionId === "teladoc");
+        assert.equal(/connection-clickable/.test(c.className), (persona.id === "tele" && stage === stages[encounterIndex] && c.dataset.solutionId === "teladoc")
+          || Boolean(connectionsFor(stage, persona.id).find(({ id }) => id === c.dataset.solutionId).externalLink));
       }
     }
   }
+});
+
+test("Maria's Discharge Jaide AI Translation card opens the discharge video in a new tab by click and keyboard", () => {
+  const url = "https://www.youtube.com/watch?v=NE72LS-x-rs&list=PL2nqsuaL4MUK7ZOcbzFeeTHJ8tJXyDerR&index=2";
+  const app = journey();
+  app.el("scenarioGrid").children[personas.findIndex(({ id }) => id === "span")].click();
+  app.node(stages.findIndex(({ title }) => title === "Discharge & Transition of Care")).click();
+  const card = app.el("connectionGrid").children.find((c) => c.dataset.solutionId === "jaide");
+  assert.equal(card.children[0].textContent, "Jaide AI Translation");
+  assert.match(card.className, /connection-preferred/);
+  assert.match(card.className, /connection-clickable/);
+  assert.equal(card.role, "link");
+  assert.equal(card.tabindex, "0");
+
+  card.click();
+  card.handlers.keydown({ key: "Enter", preventDefault() {} });
+  card.handlers.keydown({ key: " ", preventDefault() {} });
+  card.handlers.keydown({ key: "Tab", preventDefault() {} });
+  assert.deepEqual(app.opened, Array(3).fill([url, "_blank", "noopener,noreferrer"]));
 });
