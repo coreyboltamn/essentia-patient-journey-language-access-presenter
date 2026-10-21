@@ -169,19 +169,25 @@ test("Maria's pilot pairs patient and Essentia actions in every connection box",
   assert.equal(count, 31);
 });
 
-test("Maria-only overrides leave other personas' connection wording unchanged", () => {
-  for (const stage of stages) {
-    for (const connection of stage.connections) {
-      if (connection.descriptionByPersona) {
-        assert.deepEqual(Object.keys(connection.descriptionByPersona), ["span"]);
+test("paired action wording covers every Abdi, Tran and Joanna connection card", () => {
+  for (const [persona, name] of [["som", "Abdi"], ["tele", "Tran"], ["joanna", "Joanna"]]) {
+    for (const stage of stages) {
+      for (const card of connectionsFor(stage, persona)) {
+        const lines = card.description.split("\n");
+        assert.equal(lines.length, 2, `${name} ${stage.title}: ${card.id}`);
+        assert.match(lines[0], new RegExp(`^Patient action: ${name} .+\\.$`));
+        assert.match(lines[1], /^Essentia action: .+\.$/);
+        assert.ok(lines.every((line) => line.length <= 200), `${name} ${stage.title}: ${card.id}`);
       }
     }
-    for (const persona of ["som", "tele", "joanna"]) {
-      for (const card of connectionsFor(stage, persona)) {
-        const original = stage.connections.find(({ id }) => id === card.id);
-        assert.equal(card.description, persona === "joanna" && original.asl ? original.asl : original.description);
-        assert.doesNotMatch(card.description, /Patient action:|Essentia action:/);
-      }
+  }
+});
+
+test("paired persona copy leaves Maria's approved connection wording unchanged", () => {
+  for (const stage of stages) {
+    for (const card of connectionsFor(stage, "span")) {
+      const original = stage.connections.find(({ id }) => id === card.id);
+      assert.equal(card.description, original.descriptionByPersona?.span ?? original.description);
     }
   }
 });
@@ -196,8 +202,6 @@ test("MyChart communication descriptions apply only to Maria's post-visit Epic a
         if (targeted) {
           assert.equal(card.preferred, true);
           assert.equal(card.description, original.descriptionByPersona.span);
-        } else if (persona.id !== "span") {
-          assert.equal(card.description, persona.id === "joanna" && original.asl ? original.asl : original.description);
         }
       }
     }

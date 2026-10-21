@@ -289,6 +289,148 @@ const stages = [
   },
 ];
 
+const pairedConnectionDescriptions = {
+  som: {
+    "Awareness & Access to Care": {
+      "patient-line": "Patient action: Abdi calls to ask where to begin prenatal care in Somali.\nEssentia action: Access staff explain options with a qualified Somali interpreter.",
+      "vri-opi": "Patient action: Abdi asks about maternity services in Somali.\nEssentia action: Access staff connect a qualified Somali video or phone interpreter.",
+      jaide: "Patient action: Abdi reviews Somali service information and asks about next steps.\nEssentia action: Staff provide approved nonclinical written translations; AI is not medical interpretation.",
+    },
+    "Appointment Confirmation & Pre-Visit": {
+      "in-person": "Patient action: Abdi shares her visit time and Somali interpreter needs.\nEssentia action: Scheduling staff request a qualified in-person interpreter and confirm details.",
+      epic: "Patient action: Abdi shares her language and interpreter preferences.\nEssentia action: Staff record needs in the configured Epic workflow; this demo does not sync records.",
+      "patient-line": "Patient action: Abdi calls with appointment and preparation questions in Somali.\nEssentia action: Staff review details through the configured Patient Line workflow.",
+      jaide: "Patient action: Abdi reviews Somali preparation instructions and notes questions.\nEssentia action: Staff provide translated materials after appropriate qualified review and approval.",
+    },
+    "Arrival & Check-In": {
+      "vri-opi": "Patient action: Abdi confirms check-in details in Somali.\nEssentia action: Registration staff connect a qualified video or phone interpreter before intake.",
+      mobile: "Patient action: Abdi joins a Somali interpreter on a mobile device for intake.\nEssentia action: Staff bring the configured device and check the connection.",
+      epic: "Patient action: Abdi confirms her Somali communication preferences at check-in.\nEssentia action: Registration staff verify needs in the configured Epic workflow.",
+      "in-person": "Patient action: Abdi meets her Somali interpreter before triage.\nEssentia action: Staff confirm the qualified in-person interpreter has arrived or arrange backup.",
+    },
+    "Clinical Encounter": {
+      "vri-opi": "Patient action: Abdi describes symptoms and asks care questions in Somali.\nEssentia action: Clinicians include a qualified video or phone interpreter.",
+      "in-person": "Patient action: Abdi asks about care options and consent in Somali.\nEssentia action: The care team includes a qualified in-person interpreter for complex discussions.",
+      epic: "Patient action: Abdi discusses her care plan with Somali interpretation.\nEssentia action: Clinicians record interpreter participation in the configured Epic workflow.",
+      mobile: "Patient action: Abdi speaks with her clinician through a Somali interpreter.\nEssentia action: Staff position the configured mobile device so everyone can communicate clearly.",
+    },
+    "Treatment / Inpatient Stay": {
+      "smart-tv": "Patient action: Abdi asks bedside questions about maternity care in Somali.\nEssentia action: Where configured, staff connect a qualified video interpreter through Smart TV.",
+      mobile: "Patient action: Abdi asks questions as her maternity care team changes.\nEssentia action: Staff bring a configured mobile device with qualified Somali interpreter access.",
+      "vri-opi": "Patient action: Abdi reviews medication changes and asks questions in Somali.\nEssentia action: Nurses connect a qualified video or phone interpreter for updates.",
+      "in-person": "Patient action: Abdi discusses maternity care choices in Somali at a conference.\nEssentia action: Staff schedule a qualified in-person interpreter for planned discussions.",
+      epic: "Patient action: Abdi shares her Somali-language support needs during her stay.\nEssentia action: Care teams record preferences and interpreter needs for next shifts.",
+    },
+    "Discharge & Transition of Care": {
+      "vri-opi": "Patient action: Abdi explains her postpartum care plan in Somali and asks questions.\nEssentia action: Discharge staff review instructions with a qualified interpreter and complete teach-back.",
+      "in-person": "Patient action: Abdi and her caregivers review next steps in Somali before going home.\nEssentia action: Staff arrange a qualified in-person interpreter for complex education.",
+      epic: "Patient action: Abdi confirms how she wants to receive Somali follow-up information.\nEssentia action: Staff record interpreted discharge education and communication needs in Epic.",
+      jaide: "Patient action: Abdi reads written discharge instructions and asks questions in Somali.\nEssentia action: Staff obtain qualified review and approval of AI-assisted translations before distribution.",
+      "patient-line": "Patient action: Abdi confirms how to call with questions in Somali after discharge.\nEssentia action: Staff explain the configured Patient Line steps for follow-up questions.",
+    },
+    "Post Visit & Ongoing Care": {
+      "patient-line": "Patient action: Abdi calls with postpartum follow-up questions in Somali.\nEssentia action: Staff coordinate next steps through the configured Patient Line workflow.",
+      "vri-opi": "Patient action: Abdi discusses recovery and ongoing care questions in Somali.\nEssentia action: Care managers include a qualified video or phone interpreter.",
+      mobile: "Patient action: Abdi checks that she can join follow-up language support on her mobile device.\nEssentia action: Staff test the configured workflow before scheduling interpreter support.",
+      epic: "Patient action: Abdi receives ongoing outreach in Somali.\nEssentia action: Care coordinators document communication needs and interpreted follow-up in Epic.",
+      jaide: "Patient action: Abdi reads Somali follow-up information and asks care questions.\nEssentia action: Staff obtain qualified review of AI-assisted written content and use interpreters for clinical questions.",
+    },
+  },
+  tele: {
+    "Awareness & Access to Care": {
+      "patient-line": "Patient action: Tran calls to discuss Vietnamese access needs and where to start care.\nEssentia action: Access staff explain options with a qualified Vietnamese interpreter.",
+      "vri-opi": "Patient action: Tran asks about care options in Vietnamese.\nEssentia action: Access staff connect a qualified Vietnamese video or phone interpreter.",
+      jaide: "Patient action: Tran reviews written service information and asks about next steps.\nEssentia action: Staff provide approved nonclinical translations; AI is not medical interpretation.",
+    },
+    "Appointment Confirmation & Pre-Visit": {
+      "in-person": "Patient action: Tran shares his visit time and Vietnamese interpreter needs.\nEssentia action: Scheduling staff request a qualified in-person interpreter and confirm details.",
+      epic: "Patient action: Tran shares his language and interpreter preferences.\nEssentia action: Staff record needs in the configured Epic workflow; this demo does not sync records.",
+      "patient-line": "Patient action: Tran calls with appointment and preparation questions in Vietnamese.\nEssentia action: Staff review details through the configured Patient Line workflow.",
+      jaide: "Patient action: Tran reviews Vietnamese preparation instructions and notes questions.\nEssentia action: Staff provide translated materials after appropriate qualified review and approval.",
+      teladoc: "Patient action: Tran checks how to join his telehealth visit with Vietnamese support.\nEssentia action: Staff plan qualified interpreter participation through the configured telehealth workflow.",
+    },
+    "Arrival & Check-In": {
+      "vri-opi": "Patient action: Tran confirms check-in details in Vietnamese.\nEssentia action: Registration staff connect a qualified video or phone interpreter before intake.",
+      mobile: "Patient action: Tran joins a Vietnamese interpreter on a mobile device for intake.\nEssentia action: Staff bring the configured device and check the connection.",
+      epic: "Patient action: Tran confirms his Vietnamese communication preferences at check-in.\nEssentia action: Registration staff verify needs in the configured Epic workflow.",
+      "in-person": "Patient action: Tran meets his Vietnamese interpreter before triage.\nEssentia action: Staff confirm the qualified in-person interpreter has arrived or arrange backup.",
+      teladoc: "Patient action: Tran confirms Vietnamese interpreter access for virtual check-in.\nEssentia action: Registration staff verify qualified interpreter access through the configured telehealth workflow.",
+    },
+    "Clinical Encounter": {
+      "vri-opi": "Patient action: Tran discusses symptoms and treatment questions in Vietnamese.\nEssentia action: Clinicians include a qualified video or phone interpreter.",
+      "in-person": "Patient action: Tran asks about care options and consent in Vietnamese.\nEssentia action: The care team includes a qualified in-person interpreter for complex discussions.",
+      epic: "Patient action: Tran discusses his care plan with Vietnamese interpretation.\nEssentia action: Clinicians record interpreter participation in the configured Epic workflow.",
+      mobile: "Patient action: Tran speaks with his clinician through a Vietnamese interpreter.\nEssentia action: Staff position the configured mobile device so everyone can communicate clearly.",
+      teladoc: "Patient action: Tran discusses his care with a clinician through a Vietnamese interpreter.\nEssentia action: The team includes a qualified interpreter through the configured telehealth workflow.",
+    },
+    "Treatment / Inpatient Stay": {
+      "smart-tv": "Patient action: Tran asks bedside questions about treatment in Vietnamese.\nEssentia action: Where configured, staff connect a qualified video interpreter through Smart TV.",
+      mobile: "Patient action: Tran asks questions as his care team changes.\nEssentia action: Staff bring a configured mobile device with qualified Vietnamese interpreter access.",
+      "vri-opi": "Patient action: Tran reviews medication changes and asks questions in Vietnamese.\nEssentia action: Nurses connect a qualified video or phone interpreter for updates.",
+      "in-person": "Patient action: Tran discusses care choices in Vietnamese at a conference.\nEssentia action: Staff schedule a qualified in-person interpreter for planned discussions.",
+      epic: "Patient action: Tran shares his Vietnamese-language support needs during his stay.\nEssentia action: Care teams record preferences and interpreter needs for next shifts.",
+    },
+    "Discharge & Transition of Care": {
+      "vri-opi": "Patient action: Tran explains his home care plan in Vietnamese and asks questions.\nEssentia action: Discharge staff review instructions with a qualified interpreter and complete teach-back.",
+      "in-person": "Patient action: Tran and his caregivers review next steps in Vietnamese before going home.\nEssentia action: Staff arrange a qualified in-person interpreter for complex education.",
+      epic: "Patient action: Tran confirms how he wants to receive Vietnamese follow-up information.\nEssentia action: Staff record interpreted discharge education and communication needs in Epic.",
+      jaide: "Patient action: Tran reads written discharge instructions and asks questions in Vietnamese.\nEssentia action: Staff obtain qualified review and approval of AI-assisted translations before distribution.",
+      "patient-line": "Patient action: Tran confirms how to call with questions in Vietnamese after discharge.\nEssentia action: Staff explain the configured Patient Line steps for follow-up questions.",
+    },
+    "Post Visit & Ongoing Care": {
+      "patient-line": "Patient action: Tran calls with recovery follow-up questions in Vietnamese.\nEssentia action: Staff coordinate next steps through the configured Patient Line workflow.",
+      teladoc: "Patient action: Tran joins virtual follow-up with Vietnamese interpretation.\nEssentia action: Staff plan qualified interpreter participation through the configured telehealth workflow.",
+      "vri-opi": "Patient action: Tran discusses recovery and ongoing care questions in Vietnamese.\nEssentia action: Care managers include a qualified video or phone interpreter.",
+      mobile: "Patient action: Tran checks that he can join follow-up language support on his mobile device.\nEssentia action: Staff test the configured workflow before scheduling interpreter support.",
+      epic: "Patient action: Tran receives ongoing outreach in Vietnamese.\nEssentia action: Care coordinators document communication needs and interpreted follow-up in Epic.",
+      jaide: "Patient action: Tran reads Vietnamese follow-up information and asks care questions.\nEssentia action: Staff obtain qualified review of AI-assisted written content and use interpreters for clinical questions.",
+    },
+  },
+  joanna: {
+    "Awareness & Access to Care": {
+      website: "Patient action: Joanna searches for urgent care and ASL access information.\nEssentia action: Staff confirm qualified ASL interpreter availability and next steps.",
+      "vri-opi": "Patient action: Joanna asks about ASL access before arriving.\nEssentia action: Access staff arrange a qualified ASL interpreter by VRI or OPI as appropriate.",
+      "in-person": "Patient action: Joanna requests ASL support for her visit.\nEssentia action: Access staff plan a qualified in-person ASL interpreter when video access is unsuitable.",
+    },
+    "Appointment Confirmation & Pre-Visit": {
+      "in-person": "Patient action: Joanna confirms her appointment and ASL accommodation needs.\nEssentia action: Scheduling staff request a qualified in-person ASL interpreter and confirm details.",
+      epic: "Patient action: Joanna shares her ASL communication preferences.\nEssentia action: Staff record accommodations in the configured Epic workflow; this demo does not sync records.",
+    },
+    "Arrival & Check-In": {
+      "vri-opi": "Patient action: Joanna confirms check-in details through ASL.\nEssentia action: Registration staff connect a qualified ASL interpreter by VRI before intake.",
+      mobile: "Patient action: Joanna joins a qualified ASL interpreter on a mobile device.\nEssentia action: Staff bring the configured accessible video device and check visibility.",
+      epic: "Patient action: Joanna confirms her ASL communication preferences at check-in.\nEssentia action: Registration staff verify needs in the configured Epic workflow.",
+      "in-person": "Patient action: Joanna meets her ASL interpreter before triage.\nEssentia action: Staff confirm the qualified in-person ASL interpreter has arrived or arrange backup.",
+    },
+    "Clinical Encounter": {
+      "vri-opi": "Patient action: Joanna discusses symptoms and treatment questions through ASL.\nEssentia action: Clinicians include a qualified ASL interpreter by VRI or in person.",
+      "in-person": "Patient action: Joanna asks about care options and consent through ASL.\nEssentia action: The care team includes a qualified in-person ASL interpreter for complex discussions.",
+      epic: "Patient action: Joanna discusses her care plan through ASL interpretation.\nEssentia action: Clinicians record interpreter participation in the configured Epic workflow.",
+      mobile: "Patient action: Joanna speaks with her clinician through an ASL interpreter.\nEssentia action: Staff position a configured accessible mobile video device for the qualified ASL interpreter.",
+    },
+    "Treatment / Inpatient Stay": {
+      "smart-tv": "Patient action: Joanna asks bedside questions about care through ASL.\nEssentia action: Where configured, staff connect a qualified ASL interpreter through configured accessible video Smart TV.",
+      mobile: "Patient action: Joanna asks questions as her care team changes.\nEssentia action: Staff bring a configured accessible mobile video device with qualified ASL interpreter access.",
+      "vri-opi": "Patient action: Joanna reviews medication changes and asks questions through ASL.\nEssentia action: Nurses connect a qualified ASL interpreter by VRI for updates.",
+      "in-person": "Patient action: Joanna discusses care choices through ASL at a conference.\nEssentia action: Staff schedule a qualified in-person ASL interpreter for planned discussions.",
+      epic: "Patient action: Joanna shares her ASL support needs during her stay.\nEssentia action: Care teams record accommodations and interpreter needs for next shifts.",
+    },
+    "Discharge & Transition of Care": {
+      "vri-opi": "Patient action: Joanna reviews discharge instructions and asks questions through ASL.\nEssentia action: Discharge staff provide qualified ASL interpretation by VRI and complete teach-back.",
+      "in-person": "Patient action: Joanna and her caregivers review next steps through ASL.\nEssentia action: Staff arrange a qualified in-person ASL interpreter for complex education.",
+      epic: "Patient action: Joanna confirms how she wants to receive follow-up information.\nEssentia action: Staff record interpreted discharge education and communication needs in Epic.",
+      jaide: "Patient action: Joanna reviews written discharge information and asks care questions in ASL.\nEssentia action: Staff obtain qualified review; translations do not provide ASL interpretation or replace a qualified interpreter, and qualified ASL interpretation remains available.",
+    },
+    "Post Visit & Ongoing Care": {
+      "vri-opi": "Patient action: Joanna discusses recovery and next steps through ASL.\nEssentia action: Care managers arrange qualified ASL interpretation by VRI for follow-up.",
+      mobile: "Patient action: Joanna checks that she can join follow-up ASL support on her mobile device.\nEssentia action: Staff test the configured accessible mobile video workflow with a qualified ASL interpreter.",
+      epic: "Patient action: Joanna receives ongoing outreach and shares her ASL needs.\nEssentia action: Care coordinators document accommodations and interpreted follow-up in Epic.",
+      jaide: "Patient action: Joanna reviews written follow-up information and asks care questions in ASL.\nEssentia action: Staff obtain qualified review of written content and use qualified ASL interpreters for clinical questions.",
+      "in-person": "Patient action: Joanna requests ASL support for follow-up appointments.\nEssentia action: Care coordinators arrange a qualified in-person ASL interpreter through local workflows.",
+    },
+  },
+};
+
 const solutionCatalog = {
   "vri-opi": "VRI/OPI",
   "in-person": "In-person Interpreter using Interpreter Scheduling tool",
@@ -322,7 +464,8 @@ function connectionsFor(stage, personaKey) {
     .map((connection) => ({
       id: connection.id,
       label: connection.labelByPersona?.[personaKey] ?? solutionCatalog[connection.id],
-      description: personaKey === "joanna" && connection.asl ? connection.asl : connection.descriptionByPersona?.[personaKey] ?? connection.description,
+      description: pairedConnectionDescriptions[personaKey]?.[stage.title]?.[connection.id]
+        ?? (personaKey === "joanna" && connection.asl ? connection.asl : connection.descriptionByPersona?.[personaKey] ?? connection.description),
       preferred: stage.preferredConnections?.[personaKey]?.includes(connection.id) ?? false,
       externalLink: externalConnectionLinks?.[stage.title]?.[personaKey]?.[connection.id] ?? null,
     }));
