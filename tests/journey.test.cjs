@@ -314,3 +314,44 @@ test("presenter supporting disclosures can reopen without changing stage or conn
   assert.match(html, /<details id="stageDetails" open>\s*<summary>People and outcomes<\/summary>/);
   assert.match(html, /<details id="connectionDetails" open>\s*<summary>All options, descriptions and safety notes<\/summary>/);
 });
+
+test("Tran's Clinical Encounter Telehealth card opens the integrations SVG modal", () => {
+  const svg = readFileSync(resolve(__dirname, "../assets/telehealth-integrations.svg"), "utf8");
+  assert.match(svg, /^<svg xmlns="http:\/\/www.w3.org\/2000\/svg"/);
+  assert.match(svg, /Technology Integrations/);
+  assert.match(svg, /Key benefits/);
+  assert.match(html, /<dialog id="telehealthModal"[\s\S]*id="telehealthModalClose"[\s\S]*src="assets\/telehealth-integrations.svg"[\s\S]*<\/dialog>/);
+
+  const app = journey();
+  const modal = app.el("telehealthModal");
+  modal.open = false;
+  modal.showModal = () => { modal.open = true; };
+  modal.close = () => { modal.open = false; };
+  const tranIndex = personas.findIndex(({ id }) => id === "tele");
+  const encounterIndex = stages.findIndex(({ title }) => title === "Clinical Encounter");
+  app.el("scenarioGrid").children[tranIndex].click();
+  app.node(encounterIndex).click();
+  const card = app.el("connectionGrid").children.find((c) => c.dataset.solutionId === "teladoc");
+  assert.match(card.className, /connection-preferred/);
+  assert.match(card.className, /connection-clickable/);
+  assert.equal(card["aria-haspopup"], "dialog");
+
+  card.click();
+  assert.equal(modal.open, true);
+  app.el("telehealthModalClose").click();
+  assert.equal(modal.open, false);
+
+  card.handlers.keydown({ key: "Enter", preventDefault() {} });
+  assert.equal(modal.open, true);
+  modal.handlers.click({ target: {} });
+  assert.equal(modal.open, true, "Clicks inside the dialog content keep it open");
+  modal.handlers.click({ target: modal });
+  assert.equal(modal.open, false, "Backdrop click closes the dialog");
+
+  for (const [sIndex, stage] of stages.entries()) {
+    app.node(sIndex).click();
+    for (const c of app.el("connectionGrid").children) {
+      assert.equal(/connection-clickable/.test(c.className), stage === stages[encounterIndex] && c.dataset.solutionId === "teladoc");
+    }
+  }
+});

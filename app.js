@@ -304,6 +304,7 @@ const nextBtn = document.getElementById("nextBtn");
 const playBtn = document.getElementById("playBtn");
 const resetBtn = document.getElementById("resetBtn");
 const presentationMode = document.getElementById("presentationMode");
+const telehealthModal = document.getElementById("telehealthModal");
 const body = document.body;
 
 let pIndex = 0;
@@ -383,8 +384,26 @@ function renderConnections(stage, personaKey) {
       card.appendChild(make("span", "connection-badge", personas[pIndex].name));
     }
     card.appendChild(make("p", "", item.description));
+    if (personaKey === "tele" && stage.title === "Clinical Encounter" && item.id === "teladoc") {
+      card.className += " connection-clickable";
+      card.setAttribute("role", "button");
+      card.setAttribute("tabindex", "0");
+      card.setAttribute("aria-haspopup", "dialog");
+      card.addEventListener("click", openTelehealthModal);
+      card.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openTelehealthModal();
+        }
+      });
+    }
     connectionGrid.appendChild(card);
   });
+}
+
+function openTelehealthModal() {
+  stopAuto();
+  if (!telehealthModal.open) telehealthModal.showModal();
 }
 
 function renderTimeline() {
@@ -476,6 +495,10 @@ presentationMode.addEventListener("change", () => {
   document.getElementById("touchpointDetails").open = !presentationMode.checked;
   document.getElementById("stageDetails").open = !presentationMode.checked;
   document.getElementById("connectionDetails").open = !presentationMode.checked;
+});
+document.getElementById("telehealthModalClose").addEventListener("click", () => telehealthModal.close());
+telehealthModal.addEventListener("click", (event) => {
+  if (event.target === telehealthModal) telehealthModal.close();
 });
 populateScenarioCards();
 buildNodes();
