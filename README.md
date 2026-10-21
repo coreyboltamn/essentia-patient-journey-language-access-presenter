@@ -181,6 +181,12 @@ with qualified interpreter guidance. The internal `teladoc` ID is retained to
 preserve mappings, as are `in-person` for Interpreter Scheduler and `jaide` for
 the combined translation/live-speech option.
 
+In Tran's **Clinical Encounter** step, clicking (or pressing Enter/Space on) the
+highlighted Telehealth card also opens a modal showing
+`assets/telehealth-integrations.svg`, an original illustrative graphic with
+generic partner placeholders (no third-party logos). The modal closes with the
+X button, a backdrop click or Escape, and scales to fit the viewport.
+
 Verification: `node --test tests/*.test.cjs` passed all 20 tests, including exact
 stage mappings, badge wording, Back/Next, timeline navigation, autoplay, persona
 switching, Restart and Presentation Mode. `node --check app.js` and
