@@ -103,7 +103,7 @@ const stages = [
   {
     phase: "During Visit",
     title: "Arrival & Check-In",
-    preferredConnections: { span: ["vri-opi"], som: ["in-person"], tele: ["teladoc"], joanna: ["vri-opi", "in-person"] },
+    preferredConnections: { span: ["jaide-live-speech"], som: ["in-person"], tele: ["teladoc"], joanna: ["vri-opi", "in-person"] },
     icon: "🏥",
     patient: {
       span: "Maria checks in and confirms she will have Spanish interpretation before triage begins.",
@@ -128,6 +128,7 @@ const stages = [
       { id: "epic", description: "Registration staff verify communication preferences in the configured Epic intake workflow before handing off to the care team." },
       { id: "in-person", description: "Staff confirm arrival of the scheduled qualified in-person interpreter or arrange an appropriate backup.", asl: "Staff confirm the scheduled qualified in-person ASL interpreter or arrange a qualified visual backup for urgent intake." },
       { id: "teladoc", personas: ["tele"], description: "For Tran’s virtual check-in, registration staff confirm qualified interpreter access through the configured telehealth workflow before the encounter." },
+      { id: "jaide-live-speech", personas: ["span"], description: "Staff demonstrate the configured Jaide AI Live Speech workflow at check-in and confirm whether qualified interpreter support is needed for the encounter." },
     ],
     impact: "Reliable language support at arrival prevents downstream delays.",
   },
@@ -219,7 +220,7 @@ const stages = [
       { id: "vri-opi", description: "Discharge staff use a qualified video or phone interpreter to review instructions, medication plans and patient teach-back.", asl: "Discharge staff use qualified ASL interpretation by VRI to review instructions and visual teach-back, not an audio-only call." },
       { id: "in-person", description: "Where appropriate, staff arrange a qualified in-person interpreter for complex discharge education with the patient and caregivers.", asl: "Staff arrange a qualified in-person ASL interpreter where appropriate for discharge education and follow-up planning." },
       { id: "epic", description: "Staff document interpreted discharge education and follow-up communication needs through the configured Epic discharge workflow." },
-      { id: "jaide", description: "Staff may draft translated written discharge instructions for appropriate qualified review and approval before use; AI does not replace a qualified interpreter for clinical decisions or consent.", asl: "Staff may prepare written discharge materials for appropriate qualified review alongside qualified ASL interpretation; Jaide AI Translation and Live Speech do not provide ASL interpretation or replace a qualified interpreter for clinical decisions or consent." },
+      { id: "jaide", labelByPersona: { span: "Jaide AI Translation" }, description: "Staff may draft translated written discharge instructions for appropriate qualified review and approval before use; AI does not replace a qualified interpreter for clinical decisions or consent.", asl: "Staff may prepare written discharge materials for appropriate qualified review alongside qualified ASL interpretation; Jaide AI Translation and Live Speech do not provide ASL interpretation or replace a qualified interpreter for clinical decisions or consent." },
       { id: "patient-line", description: "Staff explain the configured spoken-language Patient Line workflow for contacting the care team with questions after discharge.", asl: null },
     ],
     impact: "Effective interpreted discharge improves safety and continuity after leaving care.",
@@ -262,6 +263,7 @@ const stages = [
 const solutionCatalog = {
   "vri-opi": "VRI/OPI",
   "in-person": "In-person Interpreter using Interpreter Scheduling tool",
+  "jaide-live-speech": "Jaide AI Live Speech",
   jaide: "Jaide AI Translation and Live Speech",
   teladoc: "Telehealth",
   epic: "Epic integration",
@@ -277,7 +279,7 @@ function connectionsFor(stage, personaKey) {
       && !(personaKey === "joanna" && connection.asl === null))
     .map((connection) => ({
       id: connection.id,
-      label: solutionCatalog[connection.id],
+      label: connection.labelByPersona?.[personaKey] ?? solutionCatalog[connection.id],
       description: personaKey === "joanna" && connection.asl ? connection.asl : connection.descriptionByPersona?.[personaKey] ?? connection.description,
       preferred: stage.preferredConnections?.[personaKey]?.includes(connection.id) ?? false,
     }));
