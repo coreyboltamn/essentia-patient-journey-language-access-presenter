@@ -103,7 +103,7 @@ Each stage has explicit solution IDs and patient/staff workflow descriptions.
 Patient Line and approved written content support access/preparation; qualified
 interpretation and configured endpoints support encounters; Smart TV appears
 for inpatient care; discharge and follow-up emphasize reviewed instructions and
-continued communication. Teladoc cards appear only in Tran's virtual-visit
+continued communication. Telehealth cards appear only in Tran's virtual-visit
 preparation, check-in, encounter and ongoing-care stages.
 
 Joanna's cards omit Patient Line audio, use VRI rather than OPI
@@ -166,16 +166,18 @@ Presentation Mode, without changing Maria, Abdi or Joanna.
 | Stage | Highlighted connection(s) |
 | --- | --- |
 | Awareness & Access to Care | Patient Line |
-| Appointment Confirmation & Pre-Visit | Telehealth integration with Teladoc |
-| Arrival & Check-In | Telehealth integration with Teladoc |
-| Clinical Encounter | Telehealth integration with Teladoc |
+| Appointment Confirmation & Pre-Visit | Telehealth |
+| Arrival & Check-In | Telehealth |
+| Clinical Encounter | Telehealth |
 | Treatment / Inpatient Stay | Mobile Device Access, VRI/OPI, Epic integration, In-person Interpreter using Interpreter Scheduling tool |
 | Discharge & Transition of Care | Jaide AI Translation and Live Speech (one combined catalog card) |
-| Post Visit & Ongoing Care | Patient Line, Telehealth integration with Teladoc |
+| Post Visit & Ongoing Care | Patient Line, Telehealth |
 
-The check-in Teladoc card is Tran-only. Existing catalog labels and IDs are
-retained, including `in-person` for Interpreter Scheduler and `jaide` for the
-combined translation/live-speech option.
+The check-in Telehealth card is Tran-only. All four virtual-stage cards use the
+title exactly **Telehealth** and describe a **configured telehealth workflow**
+with qualified interpreter guidance. The internal `teladoc` ID is retained to
+preserve mappings, as are `in-person` for Interpreter Scheduler and `jaide` for
+the combined translation/live-speech option.
 
 Verification: `node --test tests/*.test.cjs` passed all 20 tests, including exact
 stage mappings, badge wording, Back/Next, timeline navigation, autoplay, persona

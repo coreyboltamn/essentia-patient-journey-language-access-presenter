@@ -16,7 +16,7 @@ test("catalog contains the canonical solutions with stable IDs", () => {
     "vri-opi": "VRI/OPI",
     "in-person": "In-person Interpreter using Interpreter Scheduling tool",
     jaide: "Jaide AI Translation and Live Speech",
-    teladoc: "Telehealth integration with Teladoc",
+    teladoc: "Telehealth",
     epic: "Epic integration",
     "patient-line": "Patient Line",
     mobile: "Mobile Device Access",
@@ -52,6 +52,7 @@ for (const persona of personas) {
       selections.add(cards.map(({ id }) => id).join(","));
       for (const card of cards) {
         assert.equal(card.label, solutionCatalog[card.id]);
+        assert.doesNotMatch(`${card.label} ${card.description}`, /teladoc/i);
         assert.ok(card.description.length > 70, `${stage.title}: ${card.id}`);
         assert.doesNotMatch(card.description, /Connected to this step/);
         assert.ok(!descriptions.has(card.description), `Repeated copy: ${card.id}`);
@@ -143,7 +144,7 @@ test("Website and ongoing in-person additions are Joanna-only and use existing c
   }
 });
 
-test("Teladoc is tied to Tran's virtual stages and all clinical AI materials require review", () => {
+test("Telehealth is tied to Tran's virtual stages and all clinical AI materials require review", () => {
   for (const [index, stage] of stages.entries()) {
     for (const persona of personas) {
       assert.equal(
