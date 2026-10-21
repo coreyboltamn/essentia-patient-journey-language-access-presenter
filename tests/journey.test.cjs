@@ -142,6 +142,21 @@ test("every scenario and timeline stage renders details and AMN mappings without
   });
 });
 
+test("Maria's connection cards render paired action lines without changing card structure", () => {
+  const app = journey();
+  assert.match(css, /\.connection-card p\s*\{[^}]*white-space:\s*pre-line;/);
+  stages.forEach((stage, index) => {
+    app.node(index).click();
+    const expected = connectionsFor(stage, "span");
+    app.el("connectionGrid").children.forEach((card, cardIndex) => {
+      assert.equal(card.children.length, expected[cardIndex].preferred ? 3 : 2);
+      assert.equal(card.children.at(-1).textContent, expected[cardIndex].description);
+      assert.match(card.children.at(-1).textContent, /^Patient action: Maria .+\nEssentia action: .+$/);
+      assert.equal(card.handlers.click, undefined);
+    });
+  });
+});
+
 test("Tran's virtual stages render exactly Telehealth with unbranded, qualified-interpreter copy", () => {
   const app = journey();
   app.el("scenarioGrid").children[personas.findIndex(({ id }) => id === "tele")].click();
