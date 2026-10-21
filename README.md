@@ -182,10 +182,11 @@ preserve mappings, as are `in-person` for Interpreter Scheduler and `jaide` for
 the combined translation/live-speech option.
 
 In Tran's **Clinical Encounter** step, clicking (or pressing Enter/Space on) the
-highlighted Telehealth card also opens a modal showing
-`assets/telehealth-integrations.svg`, an original illustrative graphic with
-generic partner placeholders (no third-party logos). The modal closes with the
-X button, a backdrop click or Escape, and scales to fit the viewport.
+highlighted Telehealth card also opens a modal showing five technology integration
+categories with platform names as text-only icon chips (no third-party logos),
+an AMN Integration Benefits panel, and a “40+ Technology Partners” summary.
+The responsive cards stack on smaller screens. The modal closes with the
+X button, a backdrop click or Escape.
 
 Verification: `node --test tests/*.test.cjs` passed all 20 tests, including exact
 stage mappings, badge wording, Back/Next, timeline navigation, autoplay, persona
