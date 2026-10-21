@@ -293,7 +293,7 @@ const solutionCatalog = {
   "vri-opi": "VRI/OPI",
   "in-person": "In-person Interpreter using Interpreter Scheduling tool",
   "jaide-live-speech": "Jaide AI Live Speech",
-  jaide: "Jaide AI Translation and Live Speech",
+  jaide: "Jaide AI Translation",
   teladoc: "Telehealth",
   epic: "Epic integration",
   "patient-line": "Patient Line",
