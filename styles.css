@@ -480,6 +480,7 @@ button {
 }
 
 .image-modal-close {
+  flex-shrink: 0;
   border: 1px solid var(--border);
   border-radius: 8px;
   background: #fff;
@@ -491,12 +492,120 @@ button {
   cursor: pointer;
 }
 
-.image-modal img {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-height: calc(100vh - 6.5rem);
-  object-fit: contain;
+.telehealth-integrations {
+  padding: 1rem;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #e9eeff, #f3f8ff);
+  overflow-wrap: anywhere;
+}
+
+.telehealth-intro {
+  margin: 0 0 1rem;
+}
+
+.telehealth-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.telehealth-categories {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.telehealth-category,
+.telehealth-benefits {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.telehealth-category h3,
+.telehealth-benefits h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+}
+
+.platform-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.platform-chips li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  max-width: 100%;
+  padding: 0.35rem 0.5rem;
+  border-radius: 8px;
+  background: var(--brand-soft);
+  font-size: 0.9rem;
+}
+
+.platform-chips li::before {
+  content: "";
+  flex: 0 0 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--brand);
+}
+
+.telehealth-benefits {
+  color: #fff;
+  background: linear-gradient(160deg, var(--brand), var(--navy));
+}
+
+.telehealth-benefits ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.telehealth-benefits li {
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.telehealth-summary {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 12px;
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(110deg, var(--navy), var(--brand));
+}
+
+.telehealth-summary strong {
+  font-size: 1.4rem;
+}
+
+.telehealth-summary p {
+  margin: 0.5rem 0 0;
+}
+
+.telehealth-disclaimer {
+  margin: 0.75rem 0 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+@media (max-width: 760px) {
+  .telehealth-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .telehealth-categories {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .connection-note {

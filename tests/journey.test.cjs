@@ -315,12 +315,30 @@ test("presenter supporting disclosures can reopen without changing stage or conn
   assert.match(html, /<details id="connectionDetails" open>\s*<summary>All options, descriptions and safety notes<\/summary>/);
 });
 
-test("Tran's Clinical Encounter Telehealth card opens the integrations SVG modal", () => {
-  const svg = readFileSync(resolve(__dirname, "../assets/telehealth-integrations.svg"), "utf8");
-  assert.match(svg, /^<svg xmlns="http:\/\/www.w3.org\/2000\/svg"/);
-  assert.match(svg, /Technology Integrations/);
-  assert.match(svg, /Key benefits/);
-  assert.match(html, /<dialog id="telehealthModal"[\s\S]*id="telehealthModalClose"[\s\S]*src="assets\/telehealth-integrations.svg"[\s\S]*<\/dialog>/);
+test("Telehealth modal lists platforms by category without logo assets", () => {
+  const modal = html.match(/<dialog id="telehealthModal"[\s\S]*?<\/dialog>/)[0];
+  const categories = [
+    ["EHR &amp; Clinical Systems", ["Epic", "Oracle", "Cerner", "DocsInk"]],
+    ["Virtual Care &amp; Telehealth", ["Amwell", "Zoom", "Vidyo", "Doximity", "Teladoc", "Mend"]],
+    ["Patient Engagement", ["Caregility", "Care.ai", "Hellocare.ai", "Lifesize", "Oneview"]],
+    ["Collaboration &amp; Communications", ["Microsoft Teams", "Cisco", "Polycom", "Pexip", "SecureVideo"]],
+    ["Clinical Workflow &amp; Monitoring", ["AvaSure", "Artisight", "Bluestream", "Mobile Heartbeat", "Vocera", "Sonifi Health"]],
+  ];
+  const sections = Array.from(modal.matchAll(/<section class="telehealth-category">([\s\S]*?)<\/section>/g), ([, section]) => section);
+  assert.equal(sections.length, categories.length);
+  categories.forEach(([title, platforms], index) => {
+    assert.ok(sections[index].includes(`<h3>${title}</h3>`));
+    assert.deepEqual(Array.from(sections[index].matchAll(/<li>(.*?)<\/li>/g), ([, name]) => name), platforms);
+  });
+  assert.match(modal, /AMN Integration Benefits/);
+  assert.match(modal, /Qualified interpreters join the virtual visit/);
+  assert.match(modal, /40\+ Technology Partners/);
+  assert.match(modal, /Powering a more connected, equitable healthcare experience/);
+  assert.doesNotMatch(modal, /<img\b|<svg\b|<iframe\b|<object\b/);
+});
+
+test("Tran's Clinical Encounter Telehealth card opens the integrations modal", () => {
+  assert.match(html, /<dialog id="telehealthModal"[\s\S]*id="telehealthModalClose"[\s\S]*<\/dialog>/);
 
   const app = journey();
   const modal = app.el("telehealthModal");
@@ -348,10 +366,17 @@ test("Tran's Clinical Encounter Telehealth card opens the integrations SVG modal
   modal.handlers.click({ target: modal });
   assert.equal(modal.open, false, "Backdrop click closes the dialog");
 
-  for (const [sIndex, stage] of stages.entries()) {
-    app.node(sIndex).click();
-    for (const c of app.el("connectionGrid").children) {
-      assert.equal(/connection-clickable/.test(c.className), stage === stages[encounterIndex] && c.dataset.solutionId === "teladoc");
+  card.handlers.keydown({ key: " ", preventDefault() {} });
+  assert.equal(modal.open, true, "Space opens the dialog");
+  modal.close();
+
+  for (const [pIndex, persona] of personas.entries()) {
+    app.el("scenarioGrid").children[pIndex].click();
+    for (const [sIndex, stage] of stages.entries()) {
+      app.node(sIndex).click();
+      for (const c of app.el("connectionGrid").children) {
+        assert.equal(/connection-clickable/.test(c.className), persona.id === "tele" && stage === stages[encounterIndex] && c.dataset.solutionId === "teladoc");
+      }
     }
   }
 });
