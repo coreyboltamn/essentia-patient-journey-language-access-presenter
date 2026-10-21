@@ -308,6 +308,11 @@ const externalConnectionLinks = {
       jaide: "https://www.youtube.com/watch?v=cQFljsXDylA&list=PL2nqsuaL4MUK7ZOcbzFeeTHJ8tJXyDerR&index=1",
     },
   },
+  "Discharge & Transition of Care": {
+    span: {
+      jaide: "https://www.youtube.com/watch?v=NE72LS-x-rs&list=PL2nqsuaL4MUK7ZOcbzFeeTHJ8tJXyDerR&index=2",
+    },
+  },
 };
 
 function connectionsFor(stage, personaKey) {
