@@ -61,10 +61,10 @@ const stages = [
       "Essentia captures demand signals by language and modality.",
     ],
     connections: [
-      { id: "website", personas: ["joanna"], description: "Joanna uses the website to find care options and qualified ASL interpreter access information before arrival; staff confirm availability through local workflows." },
+      { id: "website", personas: ["joanna"], description: "Joanna uses the website to find care options and qualified ASL interpreter access information before arrival; staff confirm availability and next steps." },
       { id: "patient-line", description: "Patients contact access staff about care options through a configured spoken-language phone workflow.", asl: null,
-        descriptionByPersona: { span: "Patient action: Maria calls to ask where to start care in Spanish.\nEssentia action: Access staff explain options through the configured Patient Line workflow." } },
-      { id: "vri-opi", description: "Access staff involve a qualified interpreter for spoken-language questions about starting care.", asl: "Access staff arrange qualified ASL interpretation by VRI through a configured accessible video workflow to discuss care entry.",
+        descriptionByPersona: { span: "Patient action: Maria calls to ask where to start care in Spanish.\nEssentia action: Access staff explain options through the configured Patient Line workflow and identify interpreter needs." } },
+      { id: "vri-opi", description: "Access staff involve a qualified interpreter for spoken-language questions about starting care.", asl: "Access staff arrange qualified ASL interpretation by VRI/OPI as appropriate for pre-arrival communication.",
         descriptionByPersona: { span: "Patient action: Maria asks questions about starting care in Spanish.\nEssentia action: Access staff connect a qualified video or phone interpreter." } },
       { id: "jaide", description: "Staff prepare approved written, nonclinical service information for patients; AI translation is not medical interpretation.", asl: null,
         descriptionByPersona: { span: "Patient action: Maria reads service information in Spanish.\nEssentia action: Staff provide approved nonclinical translations; AI is not medical interpretation." } },
@@ -75,7 +75,7 @@ const stages = [
   {
     phase: "Pre-Visit",
     title: "Appointment Confirmation & Pre-Visit",
-    preferredConnections: { span: ["patient-line"], som: ["in-person"], tele: ["teladoc"], joanna: ["in-person"] },
+    preferredConnections: { span: ["jaide"], som: ["in-person"], tele: ["teladoc"], joanna: ["in-person"] },
     icon: "🗓️",
     patient: {
       span: "Maria schedules a visit and receives prep instructions in Spanish so she can arrive ready.",
@@ -95,15 +95,15 @@ const stages = [
       "Reduced no-shows and day-of surprises.",
     ],
     connections: [
-      { id: "in-person", description: "Scheduling staff request a qualified in-person interpreter and confirm visit time, location and communication preferences.", asl: "Scheduling staff request a qualified in-person ASL interpreter and confirm visual communication preferences.",
+      { id: "in-person", description: "Scheduling staff request a qualified in-person interpreter and confirm visit time, location and communication preferences.", asl: "Scheduling staff request a qualified in-person ASL interpreter and verify communication accommodations for check-in.",
         descriptionByPersona: { span: "Patient action: Maria shares her visit time and Spanish interpreter needs.\nEssentia action: Scheduling staff request a qualified in-person interpreter and confirm details." } },
       { id: "epic", description: "Staff use the configured Epic workflow to record language and interpreter needs for appointment preparation; this demo does not synchronize records.",
         descriptionByPersona: { span: "Patient action: Maria shares her language and interpreter preferences.\nEssentia action: Staff record needs in the configured Epic workflow; this demo does not sync records." } },
       { id: "patient-line", description: "Patients use the configured spoken-language phone workflow to confirm appointment details and ask preparation questions with staff.", asl: null,
         descriptionByPersona: { span: "Patient action: Maria calls to confirm her visit and ask prep questions in Spanish.\nEssentia action: Staff review details through the configured Patient Line workflow." } },
       { id: "jaide", description: "Staff prepare translated prep content for approval; written clinical materials require appropriate qualified review before patient use.", asl: null,
-        descriptionByPersona: { span: "Patient action: Maria reads Spanish prep instructions and notes questions.\nEssentia action: Staff provide translated materials after approval and appropriate qualified review of clinical content." } },
-      { id: "teladoc", personas: ["tele"], description: "For Tran’s virtual visit, staff plan qualified interpreter participation and check the configured telehealth workflow for joining before the appointment." },
+        descriptionByPersona: { span: "Patient action: Maria reads Spanish prep instructions and notes questions.\nEssentia action: Staff provide translated materials after approval and appropriate review." } },
+      { id: "teladoc", personas: ["tele"], description: "For Tran’s virtual visit, staff plan qualified interpreter participation and check the configured telehealth workflow for joining before appointment time." },
     ],
     impact: "Preparation with language support improves readiness and operational predictability.",
   },
@@ -130,17 +130,17 @@ const stages = [
       "Check-in throughput improves.",
     ],
     connections: [
-      { id: "vri-opi", description: "Registration staff request qualified video or phone interpretation to confirm check-in details.", asl: "Registration staff request qualified ASL interpretation by VRI, checking sightlines and video readiness rather than using audio-only OPI.",
+      { id: "vri-opi", description: "Registration staff request qualified video or phone interpretation to confirm check-in details.", asl: "Registration staff request qualified ASL interpretation to confirm check-in details.",
         descriptionByPersona: { span: "Patient action: Maria confirms check-in details in Spanish.\nEssentia action: Registration staff connect a qualified video or phone interpreter before intake." } },
-      { id: "mobile", description: "Staff bring a configured mobile device to registration so the patient can join a qualified interpreter during intake.", asl: "Staff check that the mobile device has a configured accessible video workflow for a qualified ASL interpreter, with clear sightlines.",
+      { id: "mobile", description: "Staff bring a configured mobile device to registration so the patient can join a qualified interpreter during intake.", asl: "Staff check that the mobile device supports ASL interpreter visibility and room setup before intake.",
         descriptionByPersona: { span: "Patient action: Maria joins a qualified Spanish interpreter on a mobile device for intake.\nEssentia action: Staff bring the configured device and check the connection." } },
       { id: "epic", description: "Registration staff verify communication preferences in the configured Epic intake workflow before handing off to the care team.",
-        descriptionByPersona: { span: "Patient action: Maria confirms her Spanish communication preferences at check-in.\nEssentia action: Registration staff verify needs in the configured Epic workflow for the care team." } },
-      { id: "in-person", description: "Staff confirm arrival of the scheduled qualified in-person interpreter or arrange an appropriate backup.", asl: "Staff confirm the scheduled qualified in-person ASL interpreter or arrange a qualified visual backup for urgent intake.",
-        descriptionByPersona: { span: "Patient action: Maria meets her Spanish interpreter before triage.\nEssentia action: Staff confirm the qualified in-person interpreter has arrived or arrange qualified backup." } },
-      { id: "teladoc", personas: ["tele"], description: "For Tran’s virtual check-in, registration staff confirm qualified interpreter access through the configured telehealth workflow before the encounter." },
-      { id: "jaide-live-speech", personas: ["span"], description: "Staff demonstrate the configured Jaide AI Live Speech workflow at check-in and confirm whether qualified interpreter support is needed for the encounter.",
-        descriptionByPersona: { span: "Patient action: Maria tries Spanish-language AI support for nonclinical check-in questions.\nEssentia action: Staff demonstrate configured Live Speech and arrange qualified interpretation for clinical care." } },
+        descriptionByPersona: { span: "Patient action: Maria confirms her Spanish communication preferences at check-in.\nEssentia action: Registration staff verify needs in the configured Epic workflow." } },
+      { id: "in-person", description: "Staff confirm arrival of the scheduled qualified in-person interpreter or arrange an appropriate backup.", asl: "Staff confirm the scheduled qualified in-person ASL interpreter has arrived or arrange a backup.",
+        descriptionByPersona: { span: "Patient action: Maria meets her Spanish interpreter before triage.\nEssentia action: Staff confirm the qualified in-person interpreter has arrived or arrange backup." } },
+      { id: "teladoc", personas: ["tele"], description: "For Tran’s virtual check-in, registration staff confirm qualified interpreter access through the configured telehealth workflow before the encounter starts." },
+      { id: "jaide-live-speech", personas: ["span"], description: "Staff demonstrate the configured Jaide AI Live Speech workflow at check-in and confirm whether qualified interpreter support is still needed for clinical content.",
+        descriptionByPersona: { span: "Patient action: Maria tries Spanish-language AI support for nonclinical check-in questions.\nEssentia action: Staff demonstrate configured Live Speech and assess if qualified interpreter support is needed for clinical communication." } },
     ],
     impact: "Reliable language support at arrival prevents downstream delays.",
   },
@@ -167,14 +167,14 @@ const stages = [
       "Care plans are more accurately understood.",
     ],
     connections: [
-      { id: "vri-opi", description: "Clinicians use a qualified interpreter by video or phone for assessment, treatment discussions and patient questions.", asl: "Clinicians use a qualified ASL interpreter by VRI with clear video and sightlines for assessment and clinical decisions; audio-only OPI is not ASL interpretation.",
-        descriptionByPersona: { span: "Patient action: Maria describes symptoms and asks treatment questions in Spanish.\nEssentia action: Clinicians include a qualified video or phone interpreter in the discussion." } },
-      { id: "in-person", description: "A scheduled qualified in-person interpreter supports complex discussions, consent and shared decisions with the clinical team.", asl: "A qualified in-person ASL interpreter supports urgent decisions and consent with appropriate positioning and pacing.",
-        descriptionByPersona: { span: "Patient action: Maria weighs care options and asks consent questions in Spanish.\nEssentia action: The care team includes a qualified in-person interpreter for shared decisions." } },
+      { id: "vri-opi", description: "Clinicians use a qualified interpreter by video or phone for assessment, treatment discussions and patient questions.", asl: "Clinicians use a qualified ASL interpreter by video or in-person modality for urgent and complex discussions.",
+        descriptionByPersona: { span: "Patient action: Maria describes symptoms and asks treatment questions in Spanish.\nEssentia action: Clinicians include a qualified video or phone interpreter." } },
+      { id: "in-person", description: "A scheduled qualified in-person interpreter supports complex discussions, consent and shared decisions with the clinical team.", asl: "A qualified in-person ASL interpreter supports consent and urgent decision points.",
+        descriptionByPersona: { span: "Patient action: Maria weighs care options and asks consent questions in Spanish.\nEssentia action: The care team includes a qualified in-person interpreter for complex discussions." } },
       { id: "epic", description: "Clinicians document interpreter participation through the configured Epic encounter workflow; no automatic data transfer is demonstrated.",
-        descriptionByPersona: { span: "Patient action: Maria discusses her care plan with Spanish interpretation.\nEssentia action: Clinicians record interpreter participation in configured Epic; no automatic transfer is demonstrated." } },
-      { id: "mobile", description: "Staff position a configured mobile device for the patient, clinician and qualified remote interpreter during the encounter.", asl: "Staff position a mobile device only with a configured accessible video workflow and qualified ASL interpreter; the device alone does not provide ASL access.",
-        descriptionByPersona: { span: "Patient action: Maria speaks with her clinician through a qualified Spanish interpreter.\nEssentia action: Staff position the configured mobile device so everyone can communicate." } },
+        descriptionByPersona: { span: "Patient action: Maria discusses her care plan with Spanish interpretation.\nEssentia action: Clinicians record interpreter participation in configured Epic; no automatic data transfer is shown." } },
+      { id: "mobile", description: "Staff position a configured mobile device for the patient, clinician and qualified remote interpreter during the encounter.", asl: "Staff position a mobile device so clinician, patient, and qualified ASL interpreter maintain clear visibility.",
+        descriptionByPersona: { span: "Patient action: Maria speaks with her clinician through a qualified Spanish interpreter.\nEssentia action: Staff position the configured mobile device so everyone can communicate clearly." } },
       { id: "teladoc", personas: ["tele"], description: "Tran and the clinician include a qualified interpreter in the virtual follow-up using the configured telehealth workflow." },
     ],
     impact: "High-quality interpreted encounters support safer, better-informed care decisions.",
@@ -202,16 +202,16 @@ const stages = [
       "Better patient confidence across longer stays.",
     ],
     connections: [
-      { id: "smart-tv", description: "Where configured, staff use a bedside Smart TV workflow to connect the patient with a qualified video interpreter for inpatient updates.", asl: "Use a bedside Smart TV only where a configured accessible video workflow supports a qualified ASL interpreter and suitable sightlines; a TV alone does not provide ASL access.",
-        descriptionByPersona: { span: "Patient action: Maria asks about inpatient care in Spanish at her bedside.\nEssentia action: Where configured, staff connect a qualified video interpreter through the Smart TV." } },
-      { id: "mobile", description: "Care teams bring a configured mobile device with qualified interpreter access to bedside education and shift handoffs.", asl: "Care teams bring a mobile device with a configured accessible video workflow and qualified ASL interpreter to bedside updates, checking visual access at each handoff.",
-        descriptionByPersona: { span: "Patient action: Maria asks bedside questions as her care team changes.\nEssentia action: Staff bring a configured mobile device with qualified Spanish interpretation for education and handoffs." } },
-      { id: "vri-opi", description: "Nurses request qualified video or phone interpretation for repeated treatment updates and medication education.", asl: "Nurses request qualified ASL interpretation by VRI for treatment updates and medication education, maintaining visual access across shifts.",
-        descriptionByPersona: { span: "Patient action: Maria reviews medication changes and asks questions in Spanish.\nEssentia action: Nurses connect a qualified video or phone interpreter for each treatment update." } },
-      { id: "in-person", description: "Staff schedule a qualified in-person interpreter for planned care conferences and complex inpatient discussions.", asl: "Staff schedule a qualified in-person ASL interpreter for care conferences and complex discussions across units.",
-        descriptionByPersona: { span: "Patient action: Maria discusses inpatient care choices in Spanish at a care conference.\nEssentia action: Staff schedule a qualified in-person interpreter for the discussion." } },
+      { id: "smart-tv", description: "Where configured, staff use a bedside Smart TV workflow to connect the patient with a qualified video interpreter for inpatient updates.", asl: "Use a bedside Smart TV workflow with qualified ASL interpreter visibility where configured.",
+        descriptionByPersona: { span: "Patient action: Maria asks about inpatient care in Spanish at her bedside.\nEssentia action: Where configured, staff connect a qualified video interpreter through Smart TV workflow." } },
+      { id: "mobile", description: "Care teams bring a configured mobile device with qualified interpreter access to bedside education and shift handoffs.", asl: "Care teams bring a mobile device configured for qualified ASL interpretation at bedside.",
+        descriptionByPersona: { span: "Patient action: Maria asks bedside questions as her care team changes.\nEssentia action: Staff bring a configured mobile device with qualified Spanish interpreter access." } },
+      { id: "vri-opi", description: "Nurses request qualified video or phone interpretation for repeated treatment updates and medication education.", asl: "Nurses request qualified ASL interpretation for repeated updates and medication education.",
+        descriptionByPersona: { span: "Patient action: Maria reviews medication changes and asks questions in Spanish.\nEssentia action: Nurses connect a qualified video or phone interpreter for repeated updates." } },
+      { id: "in-person", description: "Staff schedule a qualified in-person interpreter for planned care conferences and complex inpatient discussions.", asl: "Staff schedule a qualified in-person ASL interpreter for conferences and complex discussions.",
+        descriptionByPersona: { span: "Patient action: Maria discusses inpatient care choices in Spanish at a care conference.\nEssentia action: Staff schedule a qualified in-person interpreter for planned discussions." } },
       { id: "epic", description: "Care teams use the configured Epic workflow to document communication preferences and interpreter needs for the next shift.",
-        descriptionByPersona: { span: "Patient action: Maria shares what Spanish-language support she needs during her stay.\nEssentia action: Care teams record preferences and interpreter needs in configured Epic for the next shift." } },
+        descriptionByPersona: { span: "Patient action: Maria shares what Spanish-language support she needs during her stay.\nEssentia action: Care teams record preferences and interpreter needs for next shifts." } },
     ],
     impact: "Sustained language support improves continuity and treatment adherence.",
   },
@@ -238,16 +238,16 @@ const stages = [
       "Stronger transition into home or next-care setting.",
     ],
     connections: [
-      { id: "vri-opi", description: "Discharge staff use a qualified video or phone interpreter to review instructions, medication plans and patient teach-back.", asl: "Discharge staff use qualified ASL interpretation by VRI to review instructions and visual teach-back, not an audio-only call.",
-        descriptionByPersona: { span: "Patient action: Maria explains her home care plan back in Spanish and asks questions.\nEssentia action: Discharge staff review instructions with a qualified video or phone interpreter." } },
-      { id: "in-person", description: "Where appropriate, staff arrange a qualified in-person interpreter for complex discharge education with the patient and caregivers.", asl: "Staff arrange a qualified in-person ASL interpreter where appropriate for discharge education and follow-up planning.",
-        descriptionByPersona: { span: "Patient action: Maria and her caregivers review next steps in Spanish before going home.\nEssentia action: Staff arrange a qualified in-person interpreter for complex discharge education." } },
+      { id: "vri-opi", description: "Discharge staff use a qualified video or phone interpreter to review instructions, medication plans and patient teach-back.", asl: "Discharge staff use qualified ASL interpretation to review instructions and teach-back.",
+        descriptionByPersona: { span: "Patient action: Maria explains her home care plan back in Spanish and asks questions.\nEssentia action: Discharge staff review instructions with a qualified interpreter and complete teach-back." } },
+      { id: "in-person", description: "Where appropriate, staff arrange a qualified in-person interpreter for complex discharge education with the patient and caregivers.", asl: "Staff arrange a qualified in-person ASL interpreter for complex discharge education when appropriate.",
+        descriptionByPersona: { span: "Patient action: Maria and her caregivers review next steps in Spanish before going home.\nEssentia action: Staff arrange a qualified in-person interpreter for complex education." } },
       { id: "epic", description: "Staff document interpreted discharge education and follow-up communication needs through the configured Epic discharge workflow.",
-        descriptionByPersona: { span: "Patient action: Maria confirms how she wants to receive Spanish follow-up information.\nEssentia action: Staff record interpreted discharge education and communication needs in configured Epic." } },
-      { id: "jaide", labelByPersona: { span: "Jaide AI Translation" }, description: "Staff may draft translated written discharge instructions for appropriate qualified review and approval before use; AI does not replace a qualified interpreter for clinical decisions or consent.", asl: "Staff may prepare written discharge materials for appropriate qualified review alongside qualified ASL interpretation; Jaide AI Translation and Live Speech do not provide ASL interpretation or replace a qualified interpreter for clinical decisions or consent.",
-        descriptionByPersona: { span: "Patient action: Maria reads Spanish discharge instructions and asks questions.\nEssentia action: Staff obtain appropriate qualified review and approval of AI drafts before use; a qualified interpreter supports clinical decisions and consent." } },
+        descriptionByPersona: { span: "Patient action: Maria confirms how she wants to receive Spanish follow-up information.\nEssentia action: Staff record interpreted discharge education and communication needs in Epic workflow." } },
+      { id: "jaide", labelByPersona: { span: "Jaide AI Translation" }, description: "Staff may draft translated written discharge instructions for appropriate qualified review and approval before patient distribution.",
+        descriptionByPersona: { span: "Patient action: Maria reads Spanish discharge instructions and asks questions.\nEssentia action: Staff obtain appropriate qualified review and approval of AI-assisted translations before distribution." } },
       { id: "patient-line", description: "Staff explain the configured spoken-language Patient Line workflow for contacting the care team with questions after discharge.", asl: null,
-        descriptionByPersona: { span: "Patient action: Maria confirms how to call with questions in Spanish after discharge.\nEssentia action: Staff explain the configured Patient Line steps for reaching her care team." } },
+        descriptionByPersona: { span: "Patient action: Maria confirms how to call with questions in Spanish after discharge.\nEssentia action: Staff explain the configured Patient Line steps for post-discharge questions." } },
     ],
     impact: "Effective interpreted discharge improves safety and continuity after leaving care.",
   },
@@ -277,13 +277,13 @@ const stages = [
       { id: "patient-line", description: "Patients reconnect with staff through the configured spoken-language phone workflow for follow-up coordination and questions.", asl: null,
         descriptionByPersona: { span: "Patient action: Maria calls with follow-up questions in Spanish.\nEssentia action: Staff coordinate next steps through the configured Patient Line workflow." } },
       { id: "teladoc", personas: ["tele"], description: "Staff plan qualified interpreter participation for Tran’s ongoing virtual check-ins through the configured telehealth workflow for follow-up." },
-      { id: "vri-opi", description: "Care managers involve a qualified video or phone interpreter when discussing recovery questions and next steps.", asl: "Care managers arrange qualified ASL interpretation by VRI for ongoing care discussions through a configured accessible video workflow.",
-        descriptionByPersona: { span: "Patient action: Maria discusses recovery and ongoing care questions in Spanish.\nEssentia action: Care managers include a qualified video or phone interpreter to review next steps." } },
-      { id: "mobile", description: "For follow-up, staff check the configured mobile access workflow with the patient before arranging a qualified remote interpreter.", asl: "For follow-up, staff check a configured accessible mobile video workflow with Joanna before arranging a qualified ASL interpreter; mobile access alone is not ASL interpretation.",
-        descriptionByPersona: { span: "Patient action: Maria checks that she can join follow-up language support on her mobile device.\nEssentia action: Staff test the configured workflow with her and arrange a qualified Spanish interpreter." } },
-      { id: "epic", description: "Care coordinators use the configured Epic follow-up workflow to document communication needs and interpreted outreach.", descriptionByPersona: { span: "Patient action: Maria confirms her Spanish messaging preferences for MyChart.\nEssentia action: Care coordinators enable MyChart communication and record needs and interpreted outreach in configured Epic." } },
-      { id: "jaide", description: "Staff prepare appropriate translated written follow-up messages for approval; clinical content requires appropriate qualified review, and clinical questions go to the care team with a qualified interpreter.", descriptionByPersona: { span: "Patient action: Maria reads Spanish follow-up messages in MyChart and asks questions.\nEssentia action: Staff obtain appropriate qualified review and approval of clinical translations; the care team answers clinical questions with a qualified interpreter." }, asl: null },
-      { id: "in-person", personas: ["joanna"], description: "Care coordinators arrange a qualified in-person ASL interpreter for ongoing appointments and follow-up questions, subject to local scheduling and availability." },
+      { id: "vri-opi", description: "Care managers involve a qualified video or phone interpreter when discussing recovery questions and next steps.", asl: "Care managers arrange qualified ASL interpretation for ongoing recovery and next-step discussions.",
+        descriptionByPersona: { span: "Patient action: Maria discusses recovery and ongoing care questions in Spanish.\nEssentia action: Care managers include a qualified video or phone interpreter." } },
+      { id: "mobile", description: "For follow-up, staff check the configured mobile access workflow with the patient before arranging a qualified remote interpreter.", asl: "For follow-up, staff verify the mobile workflow supports qualified ASL interpretation visibility and reliability.",
+        descriptionByPersona: { span: "Patient action: Maria checks that she can join follow-up language support on her mobile device.\nEssentia action: Staff test the configured workflow with her before scheduling interpreter support." } },
+      { id: "epic", description: "Care coordinators use the configured Epic follow-up workflow to document communication needs and interpreted outreach.", descriptionByPersona: { span: "Patient action: Maria receives ongoing outreach in Spanish.\nEssentia action: Care coordinators document needs and interpreted follow-up in configured Epic workflow." } },
+      { id: "jaide", description: "Staff prepare appropriate translated written follow-up messages for approval; clinical content requires appropriate qualified review, and clinical questions go through qualified interpreter pathways." },
+      { id: "in-person", personas: ["joanna"], description: "Care coordinators arrange a qualified in-person ASL interpreter for ongoing appointments and follow-up questions, subject to local scheduling workflows." },
     ],
     impact: "Ongoing interpreted engagement strengthens outcomes, loyalty, and operational learning.",
   },
@@ -302,6 +302,14 @@ const solutionCatalog = {
   website: "Website",
 };
 
+const externalConnectionLinks = {
+  "Appointment Confirmation & Pre-Visit": {
+    span: {
+      jaide: "https://www.youtube.com/watch?v=cQFljsXDylA&list=PL2nqsuaL4MUK7ZOcbzFeeTHJ8tJXyDerR&index=1",
+    },
+  },
+};
+
 function connectionsFor(stage, personaKey) {
   return stage.connections
     .filter((connection) => (!connection.personas || connection.personas.includes(personaKey))
@@ -311,6 +319,7 @@ function connectionsFor(stage, personaKey) {
       label: connection.labelByPersona?.[personaKey] ?? solutionCatalog[connection.id],
       description: personaKey === "joanna" && connection.asl ? connection.asl : connection.descriptionByPersona?.[personaKey] ?? connection.description,
       preferred: stage.preferredConnections?.[personaKey]?.includes(connection.id) ?? false,
+      externalLink: externalConnectionLinks?.[stage.title]?.[personaKey]?.[connection.id] ?? null,
     }));
 }
 
@@ -413,8 +422,23 @@ function renderConnections(stage, personaKey) {
       card.appendChild(make("span", "connection-badge", personas[pIndex].name));
     }
     card.appendChild(make("p", "", item.description));
+
+    if (item.externalLink) {
+      card.classList.add("connection-clickable");
+      card.setAttribute("role", "link");
+      card.setAttribute("tabindex", "0");
+      card.setAttribute("aria-label", `${item.label}: open linked video`);
+      card.addEventListener("click", () => window.open(item.externalLink, "_blank", "noopener,noreferrer"));
+      card.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          window.open(item.externalLink, "_blank", "noopener,noreferrer");
+        }
+      });
+    }
+
     if (personaKey === "tele" && stage.title === "Clinical Encounter" && item.id === "teladoc") {
-      card.className += " connection-clickable";
+      card.classList.add("connection-clickable");
       card.setAttribute("role", "button");
       card.setAttribute("tabindex", "0");
       card.setAttribute("aria-haspopup", "dialog");
