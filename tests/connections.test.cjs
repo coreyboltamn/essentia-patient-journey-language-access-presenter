@@ -154,17 +154,49 @@ test("Maria's check-in highlights Jaide AI Live Speech and her discharge label i
   }
 });
 
+test("Maria's pilot pairs patient and Essentia actions in every connection box", () => {
+  let count = 0;
+  for (const stage of stages) {
+    for (const card of connectionsFor(stage, "span")) {
+      const lines = card.description.split("\n");
+      assert.equal(lines.length, 2, `${stage.title}: ${card.id}`);
+      assert.match(lines[0], /^Patient action: Maria .+\.$/);
+      assert.match(lines[1], /^Essentia action: .+\.$/);
+      assert.ok(lines.every((line) => line.length <= 200), `${stage.title}: ${card.id}`);
+      count += 1;
+    }
+  }
+  assert.equal(count, 31);
+});
+
+test("Maria-only overrides leave other personas' connection wording unchanged", () => {
+  for (const stage of stages) {
+    for (const connection of stage.connections) {
+      if (connection.descriptionByPersona) {
+        assert.deepEqual(Object.keys(connection.descriptionByPersona), ["span"]);
+      }
+    }
+    for (const persona of ["som", "tele", "joanna"]) {
+      for (const card of connectionsFor(stage, persona)) {
+        const original = stage.connections.find(({ id }) => id === card.id);
+        assert.equal(card.description, persona === "joanna" && original.asl ? original.asl : original.description);
+        assert.doesNotMatch(card.description, /Patient action:|Essentia action:/);
+      }
+    }
+  }
+});
+
 test("MyChart communication descriptions apply only to Maria's post-visit Epic and Jaide options", () => {
   for (const [index, stage] of stages.entries()) {
     for (const persona of personas) {
       for (const card of connectionsFor(stage, persona.id)) {
         const targeted = index === 6 && persona.id === "span" && ["epic", "jaide"].includes(card.id);
         const original = stage.connections.find(({ id }) => id === card.id);
-        assert.equal(card.description.includes("Enable MyChart Communication"), targeted);
+        assert.equal(card.description.includes("MyChart"), targeted);
         if (targeted) {
           assert.equal(card.preferred, true);
-          assert.equal(card.description, `${original.description} Enable MyChart Communication`);
-        } else {
+          assert.equal(card.description, original.descriptionByPersona.span);
+        } else if (persona.id !== "span") {
           assert.equal(card.description, persona.id === "joanna" && original.asl ? original.asl : original.description);
         }
       }

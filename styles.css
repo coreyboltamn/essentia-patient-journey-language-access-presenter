@@ -408,6 +408,7 @@ button {
 .connection-card p {
   margin: 0.34rem 0 0;
   color: #516b84;
+  white-space: pre-line;
 }
 
 .connection-card.connection-preferred {
