@@ -355,6 +355,18 @@ test("Telehealth modal lists platforms by category without logo assets", () => {
   assert.doesNotMatch(modal, /<img\b|<svg\b|<iframe\b|<object\b/);
 });
 
+test("Telehealth redesign keeps a labelled header and scopes close interaction styles to the modal", () => {
+  const modal = html.match(/<dialog id="telehealthModal"[\s\S]*?<\/dialog>/)[0];
+  assert.match(modal, /aria-labelledby="telehealthModalTitle"/);
+  const header = modal.slice(0, modal.indexOf('<div class="telehealth-integrations">'));
+  assert.match(header, /class="telehealth-eyebrow">Tran’s journey · Clinical Encounter/);
+  assert.match(header, /<h2 id="telehealthModalTitle">Telehealth integrations<\/h2>/);
+  assert.match(header, /class="telehealth-intro"/);
+  assert.match(header, /id="telehealthModalClose"[^>]*type="button" aria-label="Close"/);
+  assert.match(css, /#telehealthModal \.image-modal-close:hover\s*\{/);
+  assert.match(css, /#telehealthModal \.image-modal-close:focus-visible\s*\{[^}]*outline: 3px solid var\(--purple\)/);
+});
+
 test("Tran's Clinical Encounter Telehealth card opens the integrations modal", () => {
   assert.match(html, /<dialog id="telehealthModal"[\s\S]*id="telehealthModalClose"[\s\S]*<\/dialog>/);
 
