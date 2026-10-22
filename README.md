@@ -113,7 +113,7 @@ written materials alongside qualified ASL interpretation, not an ASL substitute.
 AI is not a substitute for qualified medical
 interpretation; written clinical materials require appropriate qualified review.
 These are editorial examples, not validated integration or language availability.
-No APIs, credentials, PHI collection, automatic Epic synchronization or deployed
+No APIs, credentials, PHI collection, automatic EPIC synchronization or deployed
 capabilities were added. The approved palette, journey visuals, stage mapping,
 scenarios are retained.
 
@@ -131,11 +131,11 @@ both normal and Presentation Mode.
 | Appointment Confirmation & Pre-Visit | Patient Line |
 | Arrival & Check-In | Jaide AI Live Speech |
 | Clinical Encounter | VRI/OPI |
-| Treatment / Inpatient Stay | Smart TV integration, VRI/OPI, Epic integration |
+| Treatment / Inpatient Stay | Smart TV Integration, VRI/OPI, EPIC integration |
 | Discharge & Transition of Care | Jaide AI Translation |
-| Post Visit & Ongoing Care | Patient Line, Epic integration, Jaide AI Translation and Live Speech |
+| Post Visit & Ongoing Care | Patient Line, EPIC integration, Jaide AI Translation and Live Speech |
 
-Maria's post-visit Epic and Jaide descriptions also include “Enable MyChart Communication”.
+Maria's post-visit EPIC and Jaide descriptions also include “Enable MyChart Communication”.
 
 ### Abdi's highlighted connections
 
@@ -150,7 +150,7 @@ autoplay and persona switching in normal and Presentation Mode.
 | Appointment Confirmation & Pre-Visit | In-person Interpreter using Interpreter Scheduling tool |
 | Arrival & Check-In | In-person Interpreter using Interpreter Scheduling tool |
 | Clinical Encounter | In-person Interpreter using Interpreter Scheduling tool |
-| Treatment / Inpatient Stay | Smart TV integration, Epic integration |
+| Treatment / Inpatient Stay | Smart TV Integration, EPIC integration |
 | Discharge & Transition of Care | Jaide AI Translation and Live Speech (one combined catalog card) |
 | Post Visit & Ongoing Care | Patient Line |
 
@@ -171,7 +171,7 @@ Presentation Mode, without changing Maria, Abdi or Joanna.
 | Appointment Confirmation & Pre-Visit | Telehealth |
 | Arrival & Check-In | Telehealth |
 | Clinical Encounter | Telehealth |
-| Treatment / Inpatient Stay | Mobile Device Access, VRI/OPI, Epic integration, In-person Interpreter using Interpreter Scheduling tool |
+| Treatment / Inpatient Stay | Mobile Device Access, VRI/OPI, EPIC integration, In-person Interpreter using Interpreter Scheduling tool |
 | Discharge & Transition of Care | Jaide AI Translation and Live Speech (one combined catalog card) |
 | Post Visit & Ongoing Care | Patient Line, Telehealth |
 
@@ -210,7 +210,7 @@ Presentation Mode.
 | Appointment Confirmation & Pre-Visit | In-person Interpreter using Interpreter Scheduling tool |
 | Arrival & Check-In | In-person Interpreter using Interpreter Scheduling tool, VRI/OPI |
 | Clinical Encounter | In-person Interpreter using Interpreter Scheduling tool, VRI/OPI |
-| Treatment / Inpatient Stay | In-person Interpreter using Interpreter Scheduling tool, VRI/OPI, Epic integration |
+| Treatment / Inpatient Stay | In-person Interpreter using Interpreter Scheduling tool, VRI/OPI, EPIC integration |
 | Discharge & Transition of Care | Jaide AI Translation and Live Speech (one combined catalog card), VRI/OPI |
 | Post Visit & Ongoing Care | In-person Interpreter using Interpreter Scheduling tool, VRI/OPI, Mobile Device Access |
 

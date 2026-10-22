@@ -336,7 +336,7 @@ test("presenter supporting disclosures can reopen without changing stage or conn
 test("Telehealth modal lists platforms by category without logo assets", () => {
   const modal = html.match(/<dialog id="telehealthModal"[\s\S]*?<\/dialog>/)[0];
   const categories = [
-    ["EHR &amp; Clinical Systems", ["Epic", "Oracle", "Cerner", "DocsInk"]],
+    ["EHR &amp; Clinical Systems", ["EPIC", "Oracle", "Cerner", "DocsInk"]],
     ["Virtual Care &amp; Telehealth", ["Amwell", "Zoom", "Vidyo", "Doximity", "Teladoc", "Mend"]],
     ["Patient Engagement", ["Caregility", "Care.ai", "Hellocare.ai", "Lifesize", "Oneview"]],
     ["Collaboration &amp; Communications", ["Microsoft Teams", "Cisco", "Polycom", "Pexip", "SecureVideo"]],
