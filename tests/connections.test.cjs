@@ -18,7 +18,7 @@ test("catalog contains the canonical solutions with stable IDs", () => {
     "jaide-live-speech": "Jaide AI Live Speech",
     jaide: "Jaide AI Translation and Live Speech",
     teladoc: "Telehealth",
-    epic: "EPIC integration",
+    epic: "EPIC Integration",
     "patient-line": "Patient Line",
     mobile: "Mobile Device Access",
     "smart-tv": "Smart TV Integration",
