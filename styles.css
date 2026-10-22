@@ -447,7 +447,6 @@ button {
   box-shadow: inset 0 0 0 2px var(--purple), 0 6px 16px rgba(14, 58, 91, 0.16);
 }
 
-#vriOpiModal,
 #telehealthModal {
   width: min(1080px, calc(100vw - 2rem));
   max-height: calc(100vh - 2rem);
@@ -459,7 +458,6 @@ button {
   box-shadow: 0 20px 50px rgba(14, 58, 91, 0.35);
 }
 
-#vriOpiModal::backdrop,
 #telehealthModal::backdrop {
   background: rgba(8, 30, 48, 0.7);
 }
@@ -468,7 +466,6 @@ button {
   padding: 0;
 }
 
-#vriOpiModal .image-modal-head,
 #telehealthModal .image-modal-head {
   display: flex;
   align-items: flex-start;
@@ -480,7 +477,6 @@ button {
   background: linear-gradient(110deg, #f0edfa, #f1f8fb);
 }
 
-#vriOpiModal .image-modal-head h2,
 #telehealthModal .image-modal-head h2 {
   margin: 0;
   font-size: clamp(1.4rem, 2.4vw, 1.8rem);
@@ -489,7 +485,6 @@ button {
   color: var(--navy);
 }
 
-#vriOpiModal .image-modal-close,
 #telehealthModal .image-modal-close {
   flex-shrink: 0;
   border: 1px solid var(--border);
@@ -503,36 +498,14 @@ button {
   cursor: pointer;
 }
 
-#vriOpiModal .image-modal-close:hover,
 #telehealthModal .image-modal-close:hover {
   border-color: var(--purple);
   background: var(--brand-soft);
 }
 
-#vriOpiModal .image-modal-close:focus-visible,
 #telehealthModal .image-modal-close:focus-visible {
   outline: 3px solid var(--purple);
   outline-offset: 3px;
-}
-
-#vriOpiModal {
-  width: fit-content;
-  max-width: calc(100vw - 2rem);
-  overflow: auto;
-}
-
-#vriOpiModal .image-modal-body {
-  padding: 0;
-}
-
-.vri-opi-image {
-  display: block;
-  width: auto;
-  height: auto;
-  max-width: min(100%, calc(100vw - 2rem));
-  max-height: calc(100vh - 10rem);
-  margin: 0 auto;
-  object-fit: contain;
 }
 
 .telehealth-eyebrow {

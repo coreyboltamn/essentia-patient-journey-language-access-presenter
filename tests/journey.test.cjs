@@ -406,71 +406,43 @@ test("Tran's Clinical Encounter Telehealth card opens the integrations modal", (
       app.node(sIndex).click();
       for (const c of app.el("connectionGrid").children) {
         assert.equal(/connection-clickable/.test(c.className), (persona.id === "tele" && stage === stages[encounterIndex] && c.dataset.solutionId === "teladoc")
-          || (persona.id === "span" && c.dataset.solutionId === "vri-opi")
           || Boolean(connectionsFor(stage, persona.id).find(({ id }) => id === c.dataset.solutionId).externalLink));
       }
     }
   }
 });
 
-test("Maria's VRI/OPI connection cards open the uploaded image popup, and only for Maria", () => {
-  const modal = html.match(/<dialog id="vriOpiModal"[\s\S]*?<\/dialog>/)[0];
-  assert.match(modal, /aria-labelledby="vriOpiModalTitle"/);
-  assert.match(modal, /<h2 id="vriOpiModalTitle">VRI\/OPI connection<\/h2>/);
-  assert.match(modal, /id="vriOpiModalClose"[^>]*type="button" aria-label="Close"/);
-  assert.match(modal, /<img id="vriOpiModalImage"[^>]*src="assets\/maria-vri-opi\.png"[^>]*alt="[^"]+"/);
-  assert.match(css, /\.vri-opi-image\s*\{[^}]*height: auto;[^}]*object-fit: contain;/);
-  assert.match(css, /#vriOpiModal \.image-modal-close:focus-visible,\s*#telehealthModal \.image-modal-close:focus-visible\s*\{/);
-
+test("Maria's VRI/OPI connection cards remain informational without popup wiring", () => {
+  assert.doesNotMatch(html, /vriOpiModal|maria-vri-opi\.png/);
+  assert.doesNotMatch(source, /vriOpiModal|openVriOpiModal|makeDialogTrigger/);
+  assert.doesNotMatch(css, /vriOpiModal|vri-opi-image/);
   const app = journey();
-  const dialog = app.el("vriOpiModal");
-  const telehealth = app.el("telehealthModal");
-  dialog.open = false;
-  telehealth.open = false;
-  dialog.showModal = () => { dialog.open = true; };
-  dialog.close = () => { dialog.open = false; };
-  telehealth.showModal = () => { telehealth.open = true; };
   const mariaIndex = personas.findIndex(({ id }) => id === "span");
   app.el("scenarioGrid").children[mariaIndex].click();
   let checked = 0;
-  for (const [sIndex, stage] of stages.entries()) {
-    app.node(sIndex).click();
-    const card = app.el("connectionGrid").children.find((c) => c.dataset.solutionId === "vri-opi");
-    if (!connectionsFor(stage, "span").some(({ id }) => id === "vri-opi")) continue;
-    checked += 1;
-    assert.equal(card.children[0].textContent, "VRI/OPI", stage.title);
-    assert.match(card.className, /connection-clickable/);
-    assert.equal(card.role, "button");
-    assert.equal(card.tabindex, "0");
-    assert.equal(card["aria-haspopup"], "dialog");
-
-    card.click();
-    assert.equal(dialog.open, true, stage.title);
-    app.el("vriOpiModalClose").click();
-    assert.equal(dialog.open, false);
-    card.handlers.keydown({ key: "Enter", preventDefault() {} });
-    assert.equal(dialog.open, true);
-    dialog.handlers.click({ target: {} });
-    assert.equal(dialog.open, true, "Clicks on the image keep it open");
-    dialog.handlers.click({ target: dialog });
-    assert.equal(dialog.open, false, "Backdrop click closes the dialog");
-    card.handlers.keydown({ key: " ", preventDefault() {} });
-    assert.equal(dialog.open, true);
-    dialog.close();
-  }
-  assert.ok(checked > 0);
-  assert.equal(telehealth.open, false, "VRI/OPI never opens the telehealth modal");
-  assert.deepEqual(app.opened, []);
-
-  for (const [pIndex, persona] of personas.entries()) {
-    if (persona.id === "span") continue;
-    app.el("scenarioGrid").children[pIndex].click();
-    for (const [sIndex] of stages.entries()) {
+  for (const checkedMode of [false, true]) {
+    app.el("presentationMode").checked = checkedMode;
+    app.el("presentationMode").handlers.change();
+    for (const [sIndex, stage] of stages.entries()) {
       app.node(sIndex).click();
+      const expected = connectionsFor(stage, "span").find(({ id }) => id === "vri-opi");
+      if (!expected) continue;
       const card = app.el("connectionGrid").children.find((c) => c.dataset.solutionId === "vri-opi");
-      if (card) assert.doesNotMatch(card.className || "", /connection-clickable/, persona.name);
+      checked += 1;
+      assert.equal(card.children[0].textContent, "VRI/OPI", stage.title);
+      assert.equal(card.children.at(-1).textContent, expected.description);
+      assert.equal(/connection-preferred/.test(card.className), expected.preferred);
+      if (expected.preferred) assert.equal(card.children[1].textContent, "Maria");
+      assert.doesNotMatch(card.className, /connection-clickable/);
+      for (const attribute of ["role", "tabindex", "aria-haspopup"]) {
+        assert.equal(card[attribute], undefined, attribute);
+      }
+      assert.equal(card.handlers.click, undefined);
+      assert.equal(card.handlers.keydown, undefined);
     }
   }
+  assert.ok(checked > 0);
+  assert.deepEqual(app.opened, []);
 });
 
 test("Maria's Discharge Jaide AI Translation card opens the discharge video in a new tab by click and keyboard", () => {
