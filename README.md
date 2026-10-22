@@ -131,9 +131,9 @@ both normal and Presentation Mode.
 | Appointment Confirmation & Pre-Visit | Patient Line |
 | Arrival & Check-In | Jaide AI Live Speech |
 | Clinical Encounter | VRI/OPI |
-| Treatment / Inpatient Stay | Smart TV Integration, VRI/OPI, EPIC integration |
+| Treatment / Inpatient Stay | Smart TV Integration, VRI/OPI, EPIC Integration |
 | Discharge & Transition of Care | Jaide AI Translation |
-| Post Visit & Ongoing Care | Patient Line, EPIC integration, Jaide AI Translation and Live Speech |
+| Post Visit & Ongoing Care | Patient Line, EPIC Integration, Jaide AI Translation and Live Speech |
 
 Maria's post-visit EPIC and Jaide descriptions also include “Enable MyChart Communication”.
 
@@ -150,7 +150,7 @@ autoplay and persona switching in normal and Presentation Mode.
 | Appointment Confirmation & Pre-Visit | In-person Interpreter using Interpreter Scheduling tool |
 | Arrival & Check-In | In-person Interpreter using Interpreter Scheduling tool |
 | Clinical Encounter | In-person Interpreter using Interpreter Scheduling tool |
-| Treatment / Inpatient Stay | Smart TV Integration, EPIC integration |
+| Treatment / Inpatient Stay | Smart TV Integration, EPIC Integration |
 | Discharge & Transition of Care | Jaide AI Translation and Live Speech (one combined catalog card) |
 | Post Visit & Ongoing Care | Patient Line |
 
@@ -171,7 +171,7 @@ Presentation Mode, without changing Maria, Abdi or Joanna.
 | Appointment Confirmation & Pre-Visit | Telehealth |
 | Arrival & Check-In | Telehealth |
 | Clinical Encounter | Telehealth |
-| Treatment / Inpatient Stay | Mobile Device Access, VRI/OPI, EPIC integration, In-person Interpreter using Interpreter Scheduling tool |
+| Treatment / Inpatient Stay | Mobile Device Access, VRI/OPI, EPIC Integration, In-person Interpreter using Interpreter Scheduling tool |
 | Discharge & Transition of Care | Jaide AI Translation and Live Speech (one combined catalog card) |
 | Post Visit & Ongoing Care | Patient Line, Telehealth |
 
@@ -210,7 +210,7 @@ Presentation Mode.
 | Appointment Confirmation & Pre-Visit | In-person Interpreter using Interpreter Scheduling tool |
 | Arrival & Check-In | In-person Interpreter using Interpreter Scheduling tool, VRI/OPI |
 | Clinical Encounter | In-person Interpreter using Interpreter Scheduling tool, VRI/OPI |
-| Treatment / Inpatient Stay | In-person Interpreter using Interpreter Scheduling tool, VRI/OPI, EPIC integration |
+| Treatment / Inpatient Stay | In-person Interpreter using Interpreter Scheduling tool, VRI/OPI, EPIC Integration |
 | Discharge & Transition of Care | Jaide AI Translation and Live Speech (one combined catalog card), VRI/OPI |
 | Post Visit & Ongoing Care | In-person Interpreter using Interpreter Scheduling tool, VRI/OPI, Mobile Device Access |
 
