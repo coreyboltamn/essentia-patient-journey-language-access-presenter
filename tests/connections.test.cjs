@@ -18,10 +18,10 @@ test("catalog contains the canonical solutions with stable IDs", () => {
     "jaide-live-speech": "Jaide AI Live Speech",
     jaide: "Jaide AI Translation and Live Speech",
     teladoc: "Telehealth",
-    epic: "Epic integration",
+    epic: "EPIC integration",
     "patient-line": "Patient Line",
     mobile: "Mobile Device Access",
-    "smart-tv": "Smart TV integration",
+    "smart-tv": "Smart TV Integration",
     website: "Website",
   });
 });
@@ -192,7 +192,7 @@ test("paired persona copy leaves Maria's approved connection wording unchanged",
   }
 });
 
-test("MyChart communication descriptions apply only to Maria's post-visit Epic and Jaide options", () => {
+test("MyChart communication descriptions apply only to Maria's post-visit EPIC and Jaide options", () => {
   for (const [index, stage] of stages.entries()) {
     for (const persona of personas) {
       for (const card of connectionsFor(stage, persona.id)) {
