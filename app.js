@@ -491,6 +491,8 @@ const playBtn = document.getElementById("playBtn");
 const resetBtn = document.getElementById("resetBtn");
 const presentationMode = document.getElementById("presentationMode");
 const telehealthModal = document.getElementById("telehealthModal");
+const vriOpiVideoModal = document.getElementById("vriOpiVideoModal");
+const vriOpiVideo = document.getElementById("vriOpiVideo");
 const body = document.body;
 
 let pIndex = 0;
@@ -586,25 +588,41 @@ function renderConnections(stage, personaKey) {
     }
 
     if (personaKey === "tele" && stage.title === "Clinical Encounter" && item.id === "teladoc") {
-      card.classList.add("connection-clickable");
-      card.setAttribute("role", "button");
-      card.setAttribute("tabindex", "0");
-      card.setAttribute("aria-haspopup", "dialog");
-      card.addEventListener("click", openTelehealthModal);
-      card.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          openTelehealthModal();
-        }
-      });
+      makeDialogTrigger(card, openTelehealthModal);
+    }
+
+    if (personaKey === "span" && item.id === "vri-opi") {
+      card.setAttribute("aria-label", `${item.label}: play interpreter video`);
+      makeDialogTrigger(card, () => openVriOpiVideoModal(card));
     }
     connectionGrid.appendChild(card);
+  });
+}
+
+function makeDialogTrigger(card, openDialog) {
+  card.classList.add("connection-clickable");
+  card.setAttribute("role", "button");
+  card.setAttribute("tabindex", "0");
+  card.setAttribute("aria-haspopup", "dialog");
+  card.addEventListener("click", openDialog);
+  card.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      openDialog();
+    }
   });
 }
 
 function openTelehealthModal() {
   stopAuto();
   if (!telehealthModal.open) telehealthModal.showModal();
+}
+
+let vriOpiVideoTrigger = null;
+function openVriOpiVideoModal(trigger) {
+  stopAuto();
+  vriOpiVideoTrigger = trigger;
+  if (!vriOpiVideoModal.open) vriOpiVideoModal.showModal();
 }
 
 function renderTimeline() {
@@ -700,6 +718,15 @@ presentationMode.addEventListener("change", () => {
 document.getElementById("telehealthModalClose").addEventListener("click", () => telehealthModal.close());
 telehealthModal.addEventListener("click", (event) => {
   if (event.target === telehealthModal) telehealthModal.close();
+});
+document.getElementById("vriOpiVideoModalClose").addEventListener("click", () => vriOpiVideoModal.close());
+vriOpiVideoModal.addEventListener("click", (event) => {
+  if (event.target === vriOpiVideoModal) vriOpiVideoModal.close();
+});
+vriOpiVideoModal.addEventListener("close", () => {
+  vriOpiVideo.pause();
+  vriOpiVideoTrigger?.focus();
+  vriOpiVideoTrigger = null;
 });
 populateScenarioCards();
 buildNodes();
