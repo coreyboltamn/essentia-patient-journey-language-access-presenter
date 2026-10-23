@@ -368,6 +368,22 @@ test("Telehealth redesign keeps a labelled header and scopes close interaction s
   assert.match(css, /#telehealthModal \.image-modal-close:focus-visible\s*\{[^}]*outline: 3px solid var\(--purple\)/);
 });
 
+test("Telehealth image framing and header spacing stay responsive and scoped", () => {
+  assert.match(css, /#telehealthModal\s*\{[^}]*max-height: calc\(100dvh - 2rem\)/);
+  assert.match(css, /#telehealthModal \.image-modal-head\s*\{[^}]*align-items: center;[^}]*padding: clamp\(1rem, 3vw, 1\.5rem\)/);
+  assert.match(css, /#telehealthModal \.image-modal-close\s*\{[^}]*display: grid;[^}]*place-items: center;[^}]*padding: 0/);
+  const frame = css.match(/\.telehealth-image-wrap\s*\{([^}]+)\}/)[1];
+  assert.match(frame, /display: flex/);
+  assert.match(frame, /align-items: center/);
+  assert.match(frame, /justify-content: center/);
+  assert.match(frame, /padding: clamp\(1rem, 3vw, 1\.5rem\)/);
+  assert.match(frame, /background: #f6f8fc/);
+  const image = css.match(/\.telehealth-image\s*\{([^}]+)\}/)[1];
+  assert.match(image, /border: 1px solid var\(--border\)/);
+  assert.match(image, /border-radius: 12px/);
+  assert.match(image, /box-shadow: 0 4px 16px rgba\(/);
+});
+
 test("Tran's Clinical Encounter Telehealth card opens the image modal and restores focus on close", () => {
   assert.match(html, /<dialog id="telehealthModal"[\s\S]*id="telehealthModalClose"[\s\S]*<\/dialog>/);
 

@@ -524,7 +524,29 @@ button {
   outline-offset: 3px;
 }
 
-.telehealth-image-wrap,
+#telehealthModal {
+  max-height: calc(100dvh - 2rem);
+}
+
+#telehealthModal .image-modal-head {
+  align-items: center;
+  padding: clamp(1rem, 3vw, 1.5rem);
+}
+
+#telehealthModal .image-modal-close {
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+
+.telehealth-image-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  background: #f6f8fc;
+}
+
 .vri-opi-video-wrap {
   padding: 1rem 1.5rem 1.5rem;
   background: #f6f8fc;
@@ -539,6 +561,9 @@ button {
   height: auto;
   margin: 0 auto;
   object-fit: contain;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(14, 58, 91, 0.12);
 }
 
 .vri-opi-video {
