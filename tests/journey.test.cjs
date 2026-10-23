@@ -207,7 +207,7 @@ test("Back, Next, scenario selection, timeline selection and restart stop autopl
 test(`${personaId} highlights follow navigation, autoplay, presentation mode and scenario switching`, () => {
   const app = journey();
   const expected = { span: [
-    ["patient-line"], ["patient-line"], ["jaide-live-speech"], ["vri-opi"],
+    ["patient-line"], ["patient-line"], ["jaide-live-speech", "vri-opi"], ["vri-opi"],
     ["smart-tv", "vri-opi", "epic"], ["jaide"], ["patient-line", "epic", "jaide"],
   ], som: [
     ["patient-line"], ["in-person"], ["in-person"], ["in-person"],

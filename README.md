@@ -135,7 +135,7 @@ both normal and Presentation Mode.
 | --- | --- |
 | Awareness & Access to Care | Patient Line |
 | Appointment Confirmation & Pre-Visit | Patient Line |
-| Arrival & Check-In | Jaide AI Live Speech |
+| Arrival & Check-In | Jaide AI Live Speech, VRI/OPI |
 | Clinical Encounter | VRI/OPI |
 | Treatment / Inpatient Stay | Smart TV Integration, VRI/OPI, EPIC Integration |
 | Discharge & Transition of Care | Jaide AI Translation |

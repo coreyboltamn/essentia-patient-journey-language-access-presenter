@@ -139,13 +139,15 @@ test("all personas' stage preferences use valid visible solution IDs", () => {
   }
 });
 
-test("Maria's check-in highlights Jaide AI Live Speech and her discharge label is Jaide AI Translation", () => {
+test("Maria's check-in highlights Jaide AI Live Speech and VRI/OPI, and her discharge label is Jaide AI Translation", () => {
   const checkIn = stages.find(({ title }) => title === "Arrival & Check-In");
   const discharge = stages.find(({ title }) => title === "Discharge & Transition of Care");
   const mariaCheckIn = connectionsFor(checkIn, "span");
   const speech = mariaCheckIn.find(({ id }) => id === "jaide-live-speech");
+  const interpreter = mariaCheckIn.find(({ id }) => id === "vri-opi");
   assert.equal(speech.label, "Jaide AI Live Speech");
   assert.equal(speech.preferred, true);
+  assert.equal(interpreter.preferred, true);
   assert.ok(!connectionsFor(checkIn, "som").some(({ id }) => id === "jaide-live-speech"));
 
   assert.equal(connectionsFor(discharge, "span").find(({ id }) => id === "jaide").label, "Jaide AI Translation");
