@@ -32,6 +32,7 @@ function journey() {
     setAttribute(name, value) { this[name] = value; }
     addEventListener(name, handler) { this.handlers[name] = handler; }
     click() { if (!this.disabled) this.handlers.click(); }
+    focus() { document.activeElement = this; }
     scrollIntoView() { assert.fail("Journey controls must not scroll the page"); }
   }
   for (const [, id] of html.matchAll(/\bid="([^"]+)"/g)) {
@@ -56,6 +57,7 @@ function journey() {
     node: (index) => document.getElementById("nodes").children[index].children[0],
     state: () => vm.runInContext("({ pIndex, sIndex, auto })", context),
     tick: () => tick(),
+    activeElement: () => document.activeElement,
     opened,
   };
 }
@@ -407,6 +409,7 @@ test("Tran's Clinical Encounter Telehealth card opens the integrations modal", (
       for (const c of app.el("connectionGrid").children) {
         assert.equal(/connection-clickable/.test(c.className), (persona.id === "tele" && stage === stages[encounterIndex] && c.dataset.solutionId === "teladoc")
           || (persona.id === "span" && c.dataset.solutionId === "vri-opi")
+          || (persona.id === "som" && stage.title === "Appointment Confirmation & Pre-Visit" && c.dataset.solutionId === "in-person")
           || Boolean(connectionsFor(stage, persona.id).find(({ id }) => id === c.dataset.solutionId).externalLink));
       }
     }
@@ -528,4 +531,181 @@ test("Maria's Discharge Jaide AI Translation card opens the discharge video in a
   card.handlers.keydown({ key: " ", preventDefault() {} });
   card.handlers.keydown({ key: "Tab", preventDefault() {} });
   assert.deepEqual(app.opened, Array(3).fill([url, "_blank", "noopener,noreferrer"]));
+});
+
+const schedulerSlides = [
+  ["Dashboard", "Interpreter Scheduler.Dashboard Overview.png"],
+  ["Admin", "Interpreter Scheduler.Admin.png"],
+  ["Calendar", "Interpreter Scheduler.Calendar.png"],
+  ["Create Request", "Interpreter Scheduler.Create Request.png"],
+  ["Reporting", "Interpreter Scheduler.Reporting.png"],
+];
+
+function schedulerApp() {
+  const app = journey();
+  const modal = app.el("interpreterSchedulerModal");
+  modal.open = false;
+  modal.showModal = () => { modal.open = true; };
+  modal.close = () => { modal.open = false; modal.handlers.close(); };
+  const slide = () => ({
+    title: app.el("interpreterSchedulerSlideTitle").textContent,
+    status: app.el("interpreterSchedulerStatus").textContent,
+    src: app.el("interpreterSchedulerImage").src,
+    alt: app.el("interpreterSchedulerImage").alt,
+    prevDisabled: app.el("interpreterSchedulerPrev").disabled,
+    nextDisabled: app.el("interpreterSchedulerNext").disabled,
+  });
+  const openCard = () => {
+    app.el("scenarioGrid").children[personas.findIndex(({ id }) => id === "som")].click();
+    app.node(stages.findIndex(({ title }) => title === "Appointment Confirmation & Pre-Visit")).click();
+    return app.el("connectionGrid").children.find((c) => c.dataset.solutionId === "in-person");
+  };
+  return { app, modal, slide, openCard };
+}
+
+test("Interpreter Scheduler gallery markup is labelled and served from public/media with URL-encoded filenames", () => {
+  const modal = html.match(/<dialog id="interpreterSchedulerModal"[\s\S]*?<\/dialog>/)[0];
+  assert.match(modal, /aria-labelledby="interpreterSchedulerModalTitle"/);
+  assert.match(modal, /<h2 id="interpreterSchedulerModalTitle">Interpreter Scheduler<\/h2>/);
+  assert.match(modal, /class="telehealth-eyebrow">Abdi’s journey · Appointment Confirmation &amp; Pre-Visit/);
+  assert.match(modal, /id="interpreterSchedulerModalClose"[^>]*type="button" aria-label="Close Interpreter Scheduler images"/);
+  assert.match(modal, /id="interpreterSchedulerPrev"[^>]*type="button" aria-label="Previous image">&larr; Previous</);
+  assert.match(modal, /id="interpreterSchedulerNext"[^>]*type="button" aria-label="Next image">Next &rarr;</);
+  assert.match(modal, /id="interpreterSchedulerStatus"[^>]*aria-live="polite">1 of 5</);
+  assert.match(modal, /src="public\/media\/Interpreter%20Scheduler\.Dashboard%20Overview\.png"/);
+  assert.match(css, /\.scheduler-image \{[^}]*max-width: 100%[^}]*height: auto[^}]*object-fit: contain/);
+  assert.doesNotMatch(css, /\.scheduler-image \{[^}]*object-fit: cover/);
+  assert.match(css, /#interpreterSchedulerModal \.image-modal-close:focus-visible,/);
+
+  const { app } = schedulerApp();
+  const data = vm.createContext({});
+  vm.runInContext(source.slice(0, source.indexOf("const scenarioGrid =")) + "\nthis.slides = interpreterSchedulerSlides;", data);
+  assert.deepEqual(Array.from(data.slides, ({ title, file }) => [title, file]), schedulerSlides);
+  for (const { file, src, alt } of data.slides) {
+    assert.ok(require("node:fs").existsSync(resolve(__dirname, "../public/media", file)), file);
+    assert.equal(src, `public/media/${file.replaceAll(" ", "%20")}`);
+    assert.equal(decodeURIComponent(new URL(src, "https://coreyboltamn.github.io/essentia-patient-journey-language-access-presenter/").pathname),
+      `/essentia-patient-journey-language-access-presenter/public/media/${file}`);
+    assert.match(alt, /^Interpreter Scheduler /);
+  }
+  assert.equal(app.el("interpreterSchedulerModal").open, false, "Gallery stays closed on load");
+});
+
+test("Abdi's Appointment Interpreter Scheduler card opens the gallery at Dashboard and navigates in order with clear boundaries", () => {
+  const { app, modal, slide, openCard } = schedulerApp();
+  const card = openCard();
+  assert.equal(card.children[0].textContent, "In-person Interpreter using Interpreter Scheduling tool");
+  assert.match(card.className, /connection-preferred/);
+  assert.match(card.className, /connection-clickable/);
+  assert.equal(card.role, "button");
+  assert.equal(card.tabindex, "0");
+  assert.equal(card["aria-haspopup"], "dialog");
+  assert.equal(card["aria-label"], "In-person Interpreter using Interpreter Scheduling tool: view Interpreter Scheduler images");
+
+  app.el("playBtn").click();
+  card.click();
+  assert.equal(modal.open, true);
+  assert.equal(app.state().auto, null, "Opening the gallery stops autoplay");
+  assert.equal(app.activeElement(), app.el("interpreterSchedulerNext"), "Focus moves into the dialog");
+  assert.deepEqual(slide(), { title: "Dashboard", status: "1 of 5", src: "public/media/Interpreter%20Scheduler.Dashboard%20Overview.png",
+    alt: slide().alt, prevDisabled: true, nextDisabled: false });
+
+  const seen = [slide().title];
+  for (let i = 1; i < schedulerSlides.length; i += 1) {
+    app.el("interpreterSchedulerNext").click();
+    seen.push(slide().title);
+    assert.equal(slide().status, `${i + 1} of 5`);
+    assert.equal(slide().src, `public/media/${encodeURIComponent(schedulerSlides[i][1])}`);
+  }
+  assert.deepEqual(seen, schedulerSlides.map(([title]) => title));
+  assert.equal(slide().nextDisabled, true, "Next is disabled on the last image");
+  assert.equal(slide().prevDisabled, false);
+  assert.equal(app.activeElement(), app.el("interpreterSchedulerPrev"), "Focus leaves the disabled Next button");
+  app.el("interpreterSchedulerNext").click();
+  assert.equal(slide().title, "Reporting", "Next does not wrap past Reporting");
+
+  for (let i = schedulerSlides.length - 2; i >= 0; i -= 1) {
+    app.el("interpreterSchedulerPrev").click();
+    assert.equal(slide().title, schedulerSlides[i][0]);
+  }
+  assert.equal(slide().prevDisabled, true, "Previous is disabled on the first image");
+  app.el("interpreterSchedulerPrev").click();
+  assert.equal(slide().title, "Dashboard", "Previous does not wrap before Dashboard");
+  assert.equal(app.state().sIndex, 1, "Gallery navigation does not move the journey");
+
+  let restored = 0;
+  card.focus = () => { restored += 1; };
+  app.el("interpreterSchedulerNext").click();
+  app.el("interpreterSchedulerNext").click();
+  app.el("interpreterSchedulerModalClose").click();
+  assert.equal(modal.open, false);
+  assert.equal(restored, 1, "Focus returns to the card");
+
+  card.handlers.keydown({ key: "Enter", preventDefault() {} });
+  assert.equal(modal.open, true);
+  assert.equal(slide().title, "Dashboard", "Reopening resets to Dashboard");
+  modal.handlers.click({ target: app.el("interpreterSchedulerImage") });
+  assert.equal(modal.open, true, "Clicks on the image keep the dialog open");
+  modal.handlers.click({ target: modal });
+  assert.equal(modal.open, false, "Backdrop click closes the dialog");
+  card.handlers.keydown({ key: " ", preventDefault() {} });
+  assert.equal(modal.open, true, "Space opens the dialog");
+  modal.close();
+  assert.equal(restored, 3);
+  assert.deepEqual(app.opened, []);
+  assert.equal(app.el("vriOpiVideoModal").open, undefined, "Video modal is not opened");
+  assert.equal(app.el("telehealthModal").open, undefined, "Telehealth modal is not opened");
+});
+
+test("Interpreter Scheduler gallery supports arrow keys and traps Tab focus while open", () => {
+  const { app, modal, slide, openCard } = schedulerApp();
+  openCard().click();
+  let prevented = 0;
+  const key = (k, shiftKey = false) => modal.handlers.keydown({ key: k, shiftKey, preventDefault() { prevented += 1; } });
+
+  key("ArrowLeft");
+  assert.equal(slide().title, "Dashboard");
+  key("ArrowRight");
+  key("ArrowRight");
+  assert.equal(slide().title, "Calendar");
+  key("ArrowLeft");
+  assert.equal(slide().title, "Admin");
+  for (let i = 0; i < 6; i += 1) key("ArrowRight");
+  assert.equal(slide().title, "Reporting");
+  assert.equal(prevented, 10);
+  key("Escape");
+  assert.equal(prevented, 10, "Escape is left to the native dialog cancel behavior");
+  assert.equal(app.state().sIndex, 1, "Arrow keys do not move the journey");
+
+  const close = app.el("interpreterSchedulerModalClose");
+  const prev = app.el("interpreterSchedulerPrev");
+  prev.focus();
+  prevented = 0;
+  key("Tab");
+  assert.equal(app.activeElement(), close, "Tab wraps from the last enabled control (Previous) to Close");
+  key("Tab", true);
+  assert.equal(app.activeElement(), prev, "Shift+Tab wraps from Close to the last control");
+  assert.equal(prevented, 2);
+  app.el("vriOpiVideoModal").focus();
+  key("Tab");
+  assert.equal(app.activeElement(), close, "Focus outside the controls is pulled back into the dialog");
+});
+
+test("Interpreter Scheduler gallery is scoped to Abdi's Appointment Confirmation & Pre-Visit card", () => {
+  const { app, modal } = schedulerApp();
+  for (const [pIndex, persona] of personas.entries()) {
+    app.el("scenarioGrid").children[pIndex].click();
+    for (const [sIndex, stage] of stages.entries()) {
+      app.node(sIndex).click();
+      for (const card of app.el("connectionGrid").children) {
+        const scoped = persona.id === "som" && stage.title === "Appointment Confirmation & Pre-Visit" && card.dataset.solutionId === "in-person";
+        assert.equal(/view Interpreter Scheduler images/.test(card["aria-label"] ?? ""), scoped, `${persona.name} ${stage.title} ${card.dataset.solutionId}`);
+        if (card.dataset.solutionId === "in-person" && !scoped) {
+          assert.doesNotMatch(card.className, /connection-clickable/);
+          assert.equal(card.handlers.click, undefined);
+        }
+      }
+    }
+  }
+  assert.equal(modal.open, false);
 });
