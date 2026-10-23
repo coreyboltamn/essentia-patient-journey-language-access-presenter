@@ -42,6 +42,14 @@ navigation, stage details and AMN connections remain available.
    with standard controls (no autoplay). Close with the × button, Escape or a
    backdrop click; the video pauses and focus returns to the card. Other
    personas’ VRI/OPI cards remain informational.
+5. In Abdi’s **Appointment Confirmation & Pre-Visit** step, select the
+   **In-person Interpreter using Interpreter Scheduling tool** card to open an
+   Interpreter Scheduler image gallery. It always opens at **Dashboard** and
+   steps through Dashboard, Admin, Calendar, Create Request and Reporting
+   (`public/media/Interpreter Scheduler.*.png`) with Previous/Next or the
+   Left/Right arrow keys. Previous is disabled on the first image and Next on
+   the last (no wrap). Close with the × button, Escape or a backdrop click;
+   focus returns to the card.
 
 ### Viewport expectations
 

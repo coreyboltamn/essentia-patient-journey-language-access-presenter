@@ -457,6 +457,19 @@ const externalConnectionLinks = {
   },
 };
 
+const interpreterSchedulerSlides = [
+  { title: "Dashboard", file: "Interpreter Scheduler.Dashboard Overview.png", width: 1916, height: 858,
+    alt: "Interpreter Scheduler dashboard overview with upcoming reservations, unassigned reservations and languages breakdown" },
+  { title: "Admin", file: "Interpreter Scheduler.Admin.png", width: 1914, height: 856,
+    alt: "Interpreter Scheduler Admin screen for managing scheduling settings" },
+  { title: "Calendar", file: "Interpreter Scheduler.Calendar.png", width: 1917, height: 856,
+    alt: "Interpreter Scheduler Calendar view of scheduled interpreter reservations" },
+  { title: "Create Request", file: "Interpreter Scheduler.Create Request.png", width: 1916, height: 910,
+    alt: "Interpreter Scheduler Create Request form for requesting an interpreter" },
+  { title: "Reporting", file: "Interpreter Scheduler.Reporting.png", width: 1913, height: 901,
+    alt: "Interpreter Scheduler Reporting screen summarizing interpreter scheduling activity" },
+].map((slide) => ({ ...slide, src: `public/media/${encodeURIComponent(slide.file)}` }));
+
 function connectionsFor(stage, personaKey) {
   return stage.connections
     .filter((connection) => (!connection.personas || connection.personas.includes(personaKey))
@@ -493,6 +506,13 @@ const presentationMode = document.getElementById("presentationMode");
 const telehealthModal = document.getElementById("telehealthModal");
 const vriOpiVideoModal = document.getElementById("vriOpiVideoModal");
 const vriOpiVideo = document.getElementById("vriOpiVideo");
+const interpreterSchedulerModal = document.getElementById("interpreterSchedulerModal");
+const interpreterSchedulerImage = document.getElementById("interpreterSchedulerImage");
+const interpreterSchedulerSlideTitle = document.getElementById("interpreterSchedulerSlideTitle");
+const interpreterSchedulerStatus = document.getElementById("interpreterSchedulerStatus");
+const interpreterSchedulerClose = document.getElementById("interpreterSchedulerModalClose");
+const interpreterSchedulerPrev = document.getElementById("interpreterSchedulerPrev");
+const interpreterSchedulerNext = document.getElementById("interpreterSchedulerNext");
 const body = document.body;
 
 let pIndex = 0;
@@ -595,6 +615,11 @@ function renderConnections(stage, personaKey) {
       card.setAttribute("aria-label", `${item.label}: play interpreter video`);
       makeDialogTrigger(card, () => openVriOpiVideoModal(card));
     }
+
+    if (personaKey === "som" && stage.title === "Appointment Confirmation & Pre-Visit" && item.id === "in-person") {
+      card.setAttribute("aria-label", `${item.label}: view Interpreter Scheduler images`);
+      makeDialogTrigger(card, () => openInterpreterSchedulerModal(card));
+    }
     connectionGrid.appendChild(card);
   });
 }
@@ -623,6 +648,32 @@ function openVriOpiVideoModal(trigger) {
   stopAuto();
   vriOpiVideoTrigger = trigger;
   if (!vriOpiVideoModal.open) vriOpiVideoModal.showModal();
+}
+
+let interpreterSchedulerIndex = 0;
+let interpreterSchedulerTrigger = null;
+function showInterpreterSchedulerSlide(index) {
+  interpreterSchedulerIndex = Math.max(0, Math.min(index, interpreterSchedulerSlides.length - 1));
+  const slide = interpreterSchedulerSlides[interpreterSchedulerIndex];
+  const last = interpreterSchedulerSlides.length - 1;
+  interpreterSchedulerImage.src = slide.src;
+  interpreterSchedulerImage.alt = slide.alt;
+  interpreterSchedulerImage.width = slide.width;
+  interpreterSchedulerImage.height = slide.height;
+  interpreterSchedulerSlideTitle.textContent = slide.title;
+  interpreterSchedulerStatus.textContent = `${interpreterSchedulerIndex + 1} of ${interpreterSchedulerSlides.length}`;
+  interpreterSchedulerPrev.disabled = interpreterSchedulerIndex === 0;
+  interpreterSchedulerNext.disabled = interpreterSchedulerIndex === last;
+  if (interpreterSchedulerPrev.disabled && document.activeElement === interpreterSchedulerPrev) interpreterSchedulerNext.focus();
+  if (interpreterSchedulerNext.disabled && document.activeElement === interpreterSchedulerNext) interpreterSchedulerPrev.focus();
+}
+
+function openInterpreterSchedulerModal(trigger) {
+  stopAuto();
+  interpreterSchedulerTrigger = trigger;
+  showInterpreterSchedulerSlide(0);
+  if (!interpreterSchedulerModal.open) interpreterSchedulerModal.showModal();
+  interpreterSchedulerNext.focus();
 }
 
 function renderTimeline() {
@@ -727,6 +778,36 @@ vriOpiVideoModal.addEventListener("close", () => {
   vriOpiVideo.pause();
   vriOpiVideoTrigger?.focus();
   vriOpiVideoTrigger = null;
+});
+interpreterSchedulerClose.addEventListener("click", () => interpreterSchedulerModal.close());
+interpreterSchedulerPrev.addEventListener("click", () => showInterpreterSchedulerSlide(interpreterSchedulerIndex - 1));
+interpreterSchedulerNext.addEventListener("click", () => showInterpreterSchedulerSlide(interpreterSchedulerIndex + 1));
+interpreterSchedulerModal.addEventListener("click", (event) => {
+  if (event.target === interpreterSchedulerModal) interpreterSchedulerModal.close();
+});
+interpreterSchedulerModal.addEventListener("keydown", (event) => {
+  if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+    event.preventDefault();
+    showInterpreterSchedulerSlide(interpreterSchedulerIndex + (event.key === "ArrowLeft" ? -1 : 1));
+  } else if (event.key === "Tab") {
+    const focusable = [interpreterSchedulerClose, interpreterSchedulerPrev, interpreterSchedulerNext].filter((el) => !el.disabled);
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    } else if (!focusable.includes(document.activeElement)) {
+      event.preventDefault();
+      (event.shiftKey ? last : first).focus();
+    }
+  }
+});
+interpreterSchedulerModal.addEventListener("close", () => {
+  interpreterSchedulerTrigger?.focus();
+  interpreterSchedulerTrigger = null;
 });
 populateScenarioCards();
 buildNodes();
