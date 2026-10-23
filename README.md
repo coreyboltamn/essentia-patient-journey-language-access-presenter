@@ -36,6 +36,12 @@ navigation, stage details and AMN connections remain available.
 3. Scenario selection, direct timeline selection, Back, Next and Restart stop
    autoplay. Restart returns to the first scenario and first step.
    Normal stage progression does not scroll the page.
+4. In Maria’s journey, select any **VRI/OPI** connection card (click, Enter or
+   Space) to open a video popup that plays
+   `public/media/amn-ls-interpreter-video-impact-1920x1080-captions-2.mp4`
+   with standard controls (no autoplay). Close with the × button, Escape or a
+   backdrop click; the video pauses and focus returns to the card. Other
+   personas’ VRI/OPI cards remain informational.
 
 ### Viewport expectations
 
