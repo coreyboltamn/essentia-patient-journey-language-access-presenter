@@ -335,48 +335,47 @@ test("presenter supporting disclosures can reopen without changing stage or conn
   assert.match(html, /<details id="connectionDetails" open>\s*<summary>All options, descriptions and safety notes<\/summary>/);
 });
 
-test("Telehealth modal lists platforms by category without logo assets", () => {
+test("Tran's Telehealth modal shows only the uploaded integrations image without cropping", () => {
   const modal = html.match(/<dialog id="telehealthModal"[\s\S]*?<\/dialog>/)[0];
-  const categories = [
-    ["EHR &amp; Clinical Systems", ["EPIC", "Oracle", "Cerner"]],
-    ["Virtual Care &amp; Telehealth", ["Amwell", "Zoom", "Vidyo", "Doximity", "Teladoc", "Mend"]],
-    ["Patient Engagement", ["Caregility", "Care.ai", "Hellocare.ai", "Lifesize", "Oneview"]],
-    ["Collaboration &amp; Communications", ["Microsoft Teams", "Cisco", "Polycom", "Pexip", "SecureVideo"]],
-    ["Clinical Workflow &amp; Monitoring", ["AvaSure", "Artisight", "Bluestream", "Mobile Heartbeat", "Vocera", "Sonifi Health"]],
-  ];
-  const sections = Array.from(modal.matchAll(/<section class="telehealth-category">([\s\S]*?)<\/section>/g), ([, section]) => section);
-  assert.equal(sections.length, categories.length);
-  categories.forEach(([title, platforms], index) => {
-    assert.ok(sections[index].includes(`<h3>${title}</h3>`));
-    assert.deepEqual(Array.from(sections[index].matchAll(/<li>(.*?)<\/li>/g), ([, name]) => name), platforms);
-  });
-  assert.match(modal, /AMN Integration Benefits/);
-  assert.match(modal, /Qualified interpreters join the virtual visit/);
-  assert.match(modal, /40\+ Technology Partners/);
-  assert.match(modal, /Powering a more connected, equitable healthcare experience/);
-  assert.doesNotMatch(modal, /<img\b|<svg\b|<iframe\b|<object\b/);
+  const images = Array.from(modal.matchAll(/<img\b[^>]*>/g), ([image]) => image);
+  assert.equal(images.length, 1);
+  assert.match(images[0], /class="telehealth-image"/);
+  const src = images[0].match(/src="([^"]+)"/)[1];
+  assert.equal(src, "Designer%20(12).png");
+  const asset = readFileSync(resolve(__dirname, "..", decodeURIComponent(src)));
+  assert.equal(asset.subarray(1, 4).toString(), "PNG");
+  assert.equal(asset.readUInt32BE(16), 1536);
+  assert.equal(asset.readUInt32BE(20), 1024);
+  assert.match(images[0], /width="1536" height="1024"/);
+  assert.match(images[0], /alt="AMN Healthcare Language Services technology interoperability and integrations[^"]+"/);
+  assert.doesNotMatch(modal, /<video\b|<iframe\b|<object\b|telehealth-category|telehealth-summary|scheduler-controls/);
+  const imageStyles = css.match(/\.telehealth-image\s*\{([^}]+)\}/)[1];
+  assert.match(imageStyles, /max-width: 100%/);
+  assert.match(imageStyles, /max-height: calc\(100dvh - 13rem\)/);
+  assert.match(imageStyles, /width: auto/);
+  assert.match(imageStyles, /height: auto/);
+  assert.match(imageStyles, /object-fit: contain/);
 });
 
 test("Telehealth redesign keeps a labelled header and scopes close interaction styles to the modal", () => {
   const modal = html.match(/<dialog id="telehealthModal"[\s\S]*?<\/dialog>/)[0];
   assert.match(modal, /aria-labelledby="telehealthModalTitle"/);
-  const header = modal.slice(0, modal.indexOf('<div class="telehealth-integrations">'));
+  const header = modal.slice(0, modal.indexOf('<div class="telehealth-image-wrap">'));
   assert.match(header, /class="telehealth-eyebrow">Tran’s journey · Clinical Encounter/);
   assert.match(header, /<h2 id="telehealthModalTitle">Telehealth integrations<\/h2>/);
-  assert.match(header, /class="telehealth-intro"/);
   assert.match(header, /id="telehealthModalClose"[^>]*type="button" aria-label="Close"/);
   assert.match(css, /#telehealthModal \.image-modal-close:hover\s*\{/);
   assert.match(css, /#telehealthModal \.image-modal-close:focus-visible\s*\{[^}]*outline: 3px solid var\(--purple\)/);
 });
 
-test("Tran's Clinical Encounter Telehealth card opens the integrations modal", () => {
+test("Tran's Clinical Encounter Telehealth card opens the image modal and restores focus on close", () => {
   assert.match(html, /<dialog id="telehealthModal"[\s\S]*id="telehealthModalClose"[\s\S]*<\/dialog>/);
 
   const app = journey();
   const modal = app.el("telehealthModal");
   modal.open = false;
   modal.showModal = () => { modal.open = true; };
-  modal.close = () => { modal.open = false; };
+  modal.close = () => { modal.open = false; modal.handlers.close(); };
   const tranIndex = personas.findIndex(({ id }) => id === "tele");
   const encounterIndex = stages.findIndex(({ title }) => title === "Clinical Encounter");
   app.el("scenarioGrid").children[tranIndex].click();
@@ -385,11 +384,16 @@ test("Tran's Clinical Encounter Telehealth card opens the integrations modal", (
   assert.match(card.className, /connection-preferred/);
   assert.match(card.className, /connection-clickable/);
   assert.equal(card["aria-haspopup"], "dialog");
+  assert.equal(card["aria-label"], "Telehealth: view integrations image");
 
+  app.el("playBtn").click();
   card.click();
   assert.equal(modal.open, true);
+  assert.equal(app.state().auto, null);
+  assert.equal(app.activeElement(), app.el("telehealthModalClose"));
   app.el("telehealthModalClose").click();
   assert.equal(modal.open, false);
+  assert.equal(app.activeElement(), card);
 
   card.handlers.keydown({ key: "Enter", preventDefault() {} });
   assert.equal(modal.open, true);
@@ -397,10 +401,12 @@ test("Tran's Clinical Encounter Telehealth card opens the integrations modal", (
   assert.equal(modal.open, true, "Clicks inside the dialog content keep it open");
   modal.handlers.click({ target: modal });
   assert.equal(modal.open, false, "Backdrop click closes the dialog");
+  assert.equal(app.activeElement(), card);
 
   card.handlers.keydown({ key: " ", preventDefault() {} });
   assert.equal(modal.open, true, "Space opens the dialog");
   modal.close();
+  assert.equal(app.activeElement(), card, "Native dialog dismissal restores focus");
 
   for (const [pIndex, persona] of personas.entries()) {
     app.el("scenarioGrid").children[pIndex].click();

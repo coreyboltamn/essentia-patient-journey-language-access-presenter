@@ -50,6 +50,10 @@ navigation, stage details and AMN connections remain available.
    Left/Right arrow keys. Previous is disabled on the first image and Next on
    the last (no wrap). Close with the × button, Escape or a backdrop click;
    focus returns to the card.
+6. In Tran’s **Clinical Encounter** step, select **Telehealth** (click, Enter or
+   Space) to view the single uploaded integrations image, `Designer (12).png`.
+   The image scales without cropping. Close with the × button, Escape or a
+   backdrop click; focus returns to the card. Other Telehealth cards are unchanged.
 
 ### Viewport expectations
 

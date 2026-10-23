@@ -524,9 +524,21 @@ button {
   outline-offset: 3px;
 }
 
+.telehealth-image-wrap,
 .vri-opi-video-wrap {
   padding: 1rem 1.5rem 1.5rem;
   background: #f6f8fc;
+}
+
+.telehealth-image {
+  display: block;
+  max-width: 100%;
+  max-height: calc(100vh - 13rem);
+  max-height: calc(100dvh - 13rem);
+  width: auto;
+  height: auto;
+  margin: 0 auto;
+  object-fit: contain;
 }
 
 .vri-opi-video {

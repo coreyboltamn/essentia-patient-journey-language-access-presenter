@@ -608,7 +608,8 @@ function renderConnections(stage, personaKey) {
     }
 
     if (personaKey === "tele" && stage.title === "Clinical Encounter" && item.id === "teladoc") {
-      makeDialogTrigger(card, openTelehealthModal);
+      card.setAttribute("aria-label", `${item.label}: view integrations image`);
+      makeDialogTrigger(card, () => openTelehealthModal(card));
     }
 
     if (personaKey === "span" && item.id === "vri-opi") {
@@ -638,9 +639,12 @@ function makeDialogTrigger(card, openDialog) {
   });
 }
 
-function openTelehealthModal() {
+let telehealthTrigger = null;
+function openTelehealthModal(trigger) {
   stopAuto();
+  telehealthTrigger = trigger;
   if (!telehealthModal.open) telehealthModal.showModal();
+  document.getElementById("telehealthModalClose").focus();
 }
 
 let vriOpiVideoTrigger = null;
@@ -769,6 +773,10 @@ presentationMode.addEventListener("change", () => {
 document.getElementById("telehealthModalClose").addEventListener("click", () => telehealthModal.close());
 telehealthModal.addEventListener("click", (event) => {
   if (event.target === telehealthModal) telehealthModal.close();
+});
+telehealthModal.addEventListener("close", () => {
+  telehealthTrigger?.focus();
+  telehealthTrigger = null;
 });
 document.getElementById("vriOpiVideoModalClose").addEventListener("click", () => vriOpiVideoModal.close());
 vriOpiVideoModal.addEventListener("click", (event) => {
