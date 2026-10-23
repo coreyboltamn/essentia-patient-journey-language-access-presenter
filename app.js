@@ -110,7 +110,7 @@ const stages = [
   {
     phase: "During Visit",
     title: "Arrival & Check-In",
-    preferredConnections: { span: ["jaide-live-speech"], som: ["in-person"], tele: ["teladoc"], joanna: ["vri-opi", "in-person"] },
+    preferredConnections: { span: ["jaide-live-speech", "vri-opi"], som: ["in-person"], tele: ["teladoc"], joanna: ["vri-opi", "in-person"] },
     icon: "🏥",
     patient: {
       span: "Maria checks in and confirms she will have Spanish interpretation before triage begins.",
