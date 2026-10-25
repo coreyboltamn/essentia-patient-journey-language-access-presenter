@@ -536,6 +536,30 @@ test("VRI/OPI cards for other personas stay informational", () => {
   }
 });
 
+test("Maria's Arrival Jaide AI Live Speech card opens the check-in video by click and keyboard", () => {
+  const url = "https://www.youtube.com/watch?v=qHtBNM9-cKQ&list=PL2nqsuaL4MUK7ZOcbzFeeTHJ8tJXyDerR&index=3";
+  const app = journey();
+  app.node(stages.findIndex(({ title }) => title === "Arrival & Check-In")).click();
+  const card = app.el("connectionGrid").children.find((c) => c.dataset.solutionId === "jaide-live-speech");
+  assert.equal(card.children[0].textContent, "Jaide AI Live Speech");
+  assert.match(card.className, /connection-preferred/);
+  assert.match(card.className, /connection-clickable/);
+  assert.equal(card.role, "link");
+  assert.equal(card.tabindex, "0");
+  assert.equal(card["aria-label"], "Jaide AI Live Speech: open linked video");
+
+  card.click();
+  let prevented = 0;
+  for (const key of ["Enter", " ", "Tab"]) {
+    card.handlers.keydown({ key, preventDefault() { prevented += 1; } });
+  }
+  assert.equal(prevented, 2);
+  assert.deepEqual(app.opened, Array(3).fill([url, "_blank", "noopener,noreferrer"]));
+  assert.equal(app.el("vriOpiVideoModal").open, undefined);
+  assert.equal(app.el("telehealthModal").open, undefined);
+  assert.equal(app.state().sIndex, 2);
+});
+
 test("Maria's Discharge Jaide AI Translation card opens the discharge video in a new tab by click and keyboard", () => {
   const url = "https://www.youtube.com/watch?v=NE72LS-x-rs&list=PL2nqsuaL4MUK7ZOcbzFeeTHJ8tJXyDerR&index=2";
   const app = journey();
