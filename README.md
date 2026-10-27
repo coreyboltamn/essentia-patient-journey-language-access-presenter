@@ -1,29 +1,31 @@
-# essentia-patient-journey-language-access-presenter
+# Patient Journey Language Access Presenter
 
-Presenter copy of the Essentia + AMN patient journey language access microsite.
-Baseline copied from
-[`coreyboltamn/essentia-patient-journey-language-access` at `2f12f2a`](https://github.com/coreyboltamn/essentia-patient-journey-language-access/commit/2f12f2a325f9232ba30b65f3e2db11802cce7a95).
-All four personas, seven stages, solution mappings, descriptions and badge wording
-are retained. Changes and deployment belong to this presenter repository only;
-the original repository and its Pages settings are not changed.
+An illustrative patient journey showing how language access services can support
+patients and staff across a health system. The four fictional personas, seven
+stages, solution mappings and demo interactions are retained.
 
 ## Presenter deployment
 
 If GitHub Pages is enabled for this repository, its expected URL is
 https://coreyboltamn.github.io/essentia-patient-journey-language-access-presenter/.
-Deployment is not configured or verified by this change.
+This URL uses the repository's existing project slug, which is not changed by
+this code-only update. Deployment is not configured or verified by this change.
+
+The uploaded integrations image and interpreter video are retained, so their
+original artwork may still contain service-provider branding. Replace those
+assets with approved neutral versions before public use.
 
 ## Screen-sharing presentations
 
 The live-demo callout, demo markers and presenter handoff controls have been
 removed for a cleaner shared-screen experience. Scenario selection, timeline
-navigation, stage details and AMN connections remain available.
+navigation, stage details and language access connections remain available.
 
 ### Presenter workflow
 
 1. Enable **Presentation Mode** for screen sharing. It hides the hero, collapses
-   supporting sections and places active-stage details beside highlighted AMN
-   connections on laptop screens. The patient moment, what happens at this step,
+   supporting sections and places active-stage details beside highlighted
+   language access connections on laptop screens. The patient moment, what happens at this step,
    highlighted solution labels and persona badges remain visible.
    **Choose / change** shows the current persona and opens the scenario choices;
    **Common touchpoints**, **People and outcomes**, and
@@ -38,7 +40,7 @@ navigation, stage details and AMN connections remain available.
    Normal stage progression does not scroll the page.
 4. In Maria’s journey, select any **VRI/OPI** connection card (click, Enter or
    Space) to open a video popup that plays
-   `public/media/amn-ls-interpreter-video-impact-1920x1080-captions-2.mp4`
+   `public/media/interpreter-access-demo-1920x1080-captions-2.mp4`
    with standard controls (no autoplay). Close with the × button, Escape or a
    backdrop click; the video pauses and focus returns to the card. Other
    personas’ VRI/OPI cards remain informational.
@@ -80,7 +82,7 @@ are not ASL substitutes. Do not put credentials, PHI or invented demo URLs in th
 
 Run `node --test tests/*.test.cjs` (Node 18+) and `node --check app.js`.
 The dependency-free tests cover callout removal, scenario/stage navigation,
-autoplay, restart, presentation-mode disclosures, AMN connection mapping, ASL and
+autoplay, restart, presentation-mode disclosures, language access connection mapping, ASL and
 nonclinical AI safeguards. There is no build step.
 Repeat the browser checks below when changing the journey controls.
 
@@ -114,7 +116,7 @@ to the source repository, not a deployment of this presenter copy.
 In compact Presentation Mode, non-highlighted cards and all descriptions are
 available through **All options, descriptions and safety notes**.
 
-## AMN solution connections
+## Language access solution connections
 
 The connection section uses one stable-ID solution catalog in `app.js`.
 Each stage has explicit solution IDs and patient/staff workflow descriptions.
@@ -126,12 +128,12 @@ preparation, check-in, encounter and ongoing-care stages.
 
 Joanna's cards omit Patient Line audio, use VRI rather than OPI
 for ASL, and require qualified ASL interpreters and configured accessible video
-workflows for mobile/TV endpoints. Her discharge Jaide card supports reviewed
+workflows for mobile/TV endpoints. Her discharge AI translation card supports reviewed
 written materials alongside qualified ASL interpretation, not an ASL substitute.
 AI is not a substitute for qualified medical
 interpretation; written clinical materials require appropriate qualified review.
 These are editorial examples, not validated integration or language availability.
-No APIs, credentials, PHI collection, automatic EPIC synchronization or deployed
+No APIs, credentials, PHI collection, automatic EHR synchronization or deployed
 capabilities were added. The approved palette, journey visuals, stage mapping,
 scenarios are retained.
 
@@ -147,13 +149,13 @@ both normal and Presentation Mode.
 | --- | --- |
 | Awareness & Access to Care | Patient Line |
 | Appointment Confirmation & Pre-Visit | Patient Line |
-| Arrival & Check-In | Jaide AI Live Speech, VRI/OPI |
+| Arrival & Check-In | AI Live Speech Translation, VRI/OPI |
 | Clinical Encounter | VRI/OPI |
-| Treatment / Inpatient Stay | Smart TV Integration, VRI/OPI, EPIC Integration |
-| Discharge & Transition of Care | Jaide AI Translation |
-| Post Visit & Ongoing Care | Patient Line, EPIC Integration, Jaide AI Translation and Live Speech |
+| Treatment / Inpatient Stay | Smart TV Integration, VRI/OPI, EHR Integration |
+| Discharge & Transition of Care | AI-assisted Translation |
+| Post Visit & Ongoing Care | Patient Line, EHR Integration, AI-assisted Translation and Live Speech |
 
-Maria's post-visit EPIC and Jaide descriptions also include “Enable MyChart Communication”.
+Maria's post-visit EHR and AI-translation descriptions also include “Enable patient portal communication”.
 
 ### Abdi's highlighted connections
 
@@ -168,11 +170,11 @@ autoplay and persona switching in normal and Presentation Mode.
 | Appointment Confirmation & Pre-Visit | In-person Interpreter using Interpreter Scheduling tool |
 | Arrival & Check-In | In-person Interpreter using Interpreter Scheduling tool |
 | Clinical Encounter | In-person Interpreter using Interpreter Scheduling tool |
-| Treatment / Inpatient Stay | Smart TV Integration, EPIC Integration |
-| Discharge & Transition of Care | Jaide AI Translation and Live Speech (one combined catalog card) |
+| Treatment / Inpatient Stay | Smart TV Integration, EHR Integration |
+| Discharge & Transition of Care | AI-assisted Translation and Live Speech (one combined catalog card) |
 | Post Visit & Ongoing Care | Patient Line |
 
-Interpreter Scheduler uses the existing `in-person` ID and label; Jaide AI
+Interpreter Scheduler uses the existing `in-person` ID and label; AI-assisted
 Translation and Live Speech remain the existing combined `jaide` card.
 
 ### Tran's highlighted connections
@@ -189,8 +191,8 @@ Presentation Mode, without changing Maria, Abdi or Joanna.
 | Appointment Confirmation & Pre-Visit | Telehealth |
 | Arrival & Check-In | Telehealth |
 | Clinical Encounter | Telehealth |
-| Treatment / Inpatient Stay | Mobile Device Access, VRI/OPI, EPIC Integration, In-person Interpreter using Interpreter Scheduling tool |
-| Discharge & Transition of Care | Jaide AI Translation and Live Speech (one combined catalog card) |
+| Treatment / Inpatient Stay | Mobile Device Access, VRI/OPI, EHR Integration, In-person Interpreter using Interpreter Scheduling tool |
+| Discharge & Transition of Care | AI-assisted Translation and Live Speech (one combined catalog card) |
 | Post Visit & Ongoing Care | Patient Line, Telehealth |
 
 The check-in Telehealth card is Tran-only. All four virtual-stage cards use the
@@ -202,7 +204,7 @@ the combined translation/live-speech option.
 In Tran's **Clinical Encounter** step, clicking (or pressing Enter/Space on) the
 highlighted Telehealth card also opens a modal showing five technology integration
 categories with platform names as text-only icon chips (no third-party logos),
-an AMN Integration Benefits panel, and a “40+ Technology Partners” summary.
+an integration benefits panel, and a “40+ Technology Partners” summary.
 The responsive cards stack on smaller screens. The modal closes with the
 X button, a backdrop click or Escape.
 
@@ -228,8 +230,8 @@ Presentation Mode.
 | Appointment Confirmation & Pre-Visit | In-person Interpreter using Interpreter Scheduling tool |
 | Arrival & Check-In | In-person Interpreter using Interpreter Scheduling tool, VRI/OPI |
 | Clinical Encounter | In-person Interpreter using Interpreter Scheduling tool, VRI/OPI |
-| Treatment / Inpatient Stay | In-person Interpreter using Interpreter Scheduling tool, VRI/OPI, EPIC Integration |
-| Discharge & Transition of Care | Jaide AI Translation and Live Speech (one combined catalog card), VRI/OPI |
+| Treatment / Inpatient Stay | In-person Interpreter using Interpreter Scheduling tool, VRI/OPI, EHR Integration |
+| Discharge & Transition of Care | AI-assisted Translation and Live Speech (one combined catalog card), VRI/OPI |
 | Post Visit & Ongoing Care | In-person Interpreter using Interpreter Scheduling tool, VRI/OPI, Mobile Device Access |
 
 Website uses the new `website` ID because no Website connection card existed.
@@ -279,8 +281,8 @@ Only the timeline intentionally scrolls sideways.
 ### Regression checks
 
 This is a static HTML/CSS/JavaScript site using Node's built-in test runner,
-with no build dependencies. Serve the repository with a static server and check
-under `/essentia-patient-journey-language-access-presenter/`, not just at `/`.
+with no build dependencies. Serve the repository under its configured GitHub
+Pages project subpath, not just at `/`, when checking relative asset paths.
 To repeat the checks in a browser:
 
 1. Check 1366×768 and 1440×900 laptops, plus widths 768, 375 and 320 pixels.
@@ -291,7 +293,7 @@ To repeat the checks in a browser:
    patient details, highlighted touchpoints, and marker/line alignment, including
    the first and last steps.
 3. Confirm no live-demo callout, demo markers or presenter handoff controls appear.
-   Joanna must see qualified ASL VRI, never audio OPI or Jaide as ASL substitutes.
+   Joanna must see qualified ASL VRI, never audio OPI or AI translation as ASL substitutes.
 4. Exercise Back, Next, Restart Journey, and Auto-play followed by Pause. Restart
    should return to the first scenario and step.
 5. Expand/collapse **Choose / change** and **Common touchpoints** using the
