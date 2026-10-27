@@ -15,10 +15,10 @@ test("catalog contains the canonical solutions with stable IDs", () => {
   assert.deepEqual({ ...solutionCatalog }, {
     "vri-opi": "VRI/OPI",
     "in-person": "In-person Interpreter using Interpreter Scheduling tool",
-    "jaide-live-speech": "Jaide AI Live Speech",
-    jaide: "Jaide AI Translation and Live Speech",
+    "jaide-live-speech": "AI Live Speech Translation",
+    jaide: "AI-assisted Translation and Live Speech",
     teladoc: "Telehealth",
-    epic: "EPIC Integration",
+    epic: "EHR Integration",
     "patient-line": "Patient Line",
     mobile: "Mobile Device Access",
     "smart-tv": "Smart TV Integration",
@@ -139,31 +139,31 @@ test("all personas' stage preferences use valid visible solution IDs", () => {
   }
 });
 
-test("Maria's check-in highlights Jaide AI Live Speech and VRI/OPI, and her discharge label is Jaide AI Translation", () => {
+test("Maria's check-in highlights AI Live Speech Translation and VRI/OPI, and her discharge label is AI-assisted Translation", () => {
   const checkIn = stages.find(({ title }) => title === "Arrival & Check-In");
   const discharge = stages.find(({ title }) => title === "Discharge & Transition of Care");
   const mariaCheckIn = connectionsFor(checkIn, "span");
   const speech = mariaCheckIn.find(({ id }) => id === "jaide-live-speech");
   const interpreter = mariaCheckIn.find(({ id }) => id === "vri-opi");
-  assert.equal(speech.label, "Jaide AI Live Speech");
+  assert.equal(speech.label, "AI Live Speech Translation");
   assert.equal(speech.preferred, true);
   assert.equal(interpreter.preferred, true);
   assert.ok(!connectionsFor(checkIn, "som").some(({ id }) => id === "jaide-live-speech"));
 
-  assert.equal(connectionsFor(discharge, "span").find(({ id }) => id === "jaide").label, "Jaide AI Translation");
+  assert.equal(connectionsFor(discharge, "span").find(({ id }) => id === "jaide").label, "AI-assisted Translation");
   for (const persona of ["som", "tele", "joanna"]) {
     assert.equal(connectionsFor(discharge, persona).find(({ id }) => id === "jaide").label, solutionCatalog.jaide);
   }
 });
 
-test("Maria's pilot pairs patient and Essentia actions in every connection box", () => {
+test("Maria's pilot pairs patient and Health System actions in every connection box", () => {
   let count = 0;
   for (const stage of stages) {
     for (const card of connectionsFor(stage, "span")) {
       const lines = card.description.split("\n");
       assert.equal(lines.length, 2, `${stage.title}: ${card.id}`);
       assert.match(lines[0], /^Patient action: Maria .+\.$/);
-      assert.match(lines[1], /^Essentia action: .+\.$/);
+      assert.match(lines[1], /^Health System action: .+\.$/);
       assert.ok(lines.every((line) => line.length <= 200), `${stage.title}: ${card.id}`);
       count += 1;
     }
@@ -178,7 +178,7 @@ test("paired action wording covers every Abdi, Tran and Joanna connection card",
         const lines = card.description.split("\n");
         assert.equal(lines.length, 2, `${name} ${stage.title}: ${card.id}`);
         assert.match(lines[0], new RegExp(`^Patient action: ${name} .+\\.$`));
-        assert.match(lines[1], /^Essentia action: .+\.$/);
+        assert.match(lines[1], /^Health System action: .+\.$/);
         assert.ok(lines.every((line) => line.length <= 200), `${name} ${stage.title}: ${card.id}`);
       }
     }
@@ -194,13 +194,13 @@ test("paired persona copy leaves Maria's approved connection wording unchanged",
   }
 });
 
-test("MyChart communication descriptions apply only to Maria's post-visit EPIC and Jaide options", () => {
+test("patient portal communication descriptions apply only to Maria's post-visit EHR and AI translation options", () => {
   for (const [index, stage] of stages.entries()) {
     for (const persona of personas) {
       for (const card of connectionsFor(stage, persona.id)) {
         const targeted = index === 6 && persona.id === "span" && ["epic", "jaide"].includes(card.id);
         const original = stage.connections.find(({ id }) => id === card.id);
-        assert.equal(card.description.includes("MyChart"), targeted);
+        assert.equal(card.description.includes("patient portal"), targeted);
         if (targeted) {
           assert.equal(card.preferred, true);
           assert.equal(card.description, original.descriptionByPersona.span);
@@ -233,7 +233,7 @@ test("Telehealth is tied to Tran's virtual stages and all clinical AI materials 
   assert.match(html, /availability depends on configured services/);
 });
 
-test("external video links are limited to Maria's Appointment, Check-In and Discharge Jaide cards", () => {
+test("external video links are limited to Maria's Appointment, Check-In and Discharge AI translation cards", () => {
   const expected = {
     "Appointment Confirmation & Pre-Visit": "https://www.youtube.com/watch?v=cQFljsXDylA&list=PL2nqsuaL4MUK7ZOcbzFeeTHJ8tJXyDerR&index=1",
     "Arrival & Check-In": "https://www.youtube.com/watch?v=qHtBNM9-cKQ&list=PL2nqsuaL4MUK7ZOcbzFeeTHJ8tJXyDerR&index=3",
@@ -250,6 +250,6 @@ test("external video links are limited to Maria's Appointment, Check-In and Disc
   }
   const discharge = connectionsFor(stages.find(({ title }) => title === "Discharge & Transition of Care"), "span")
     .find(({ id }) => id === "jaide");
-  assert.equal(discharge.label, "Jaide AI Translation");
+  assert.equal(discharge.label, "AI-assisted Translation");
   assert.equal(discharge.preferred, true);
 });

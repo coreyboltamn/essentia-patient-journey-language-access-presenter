@@ -96,7 +96,7 @@ test("scenario and journey headings and all stage labels have no numbering prefi
   assert.doesNotMatch(html, /<(?:h[1-6]|summary)\b[^>]*>\s*\d+\.\s/i);
   assert.match(html, /<summary>Patient scenario/);
   assert.match(html, /<h2>Patient engagement timeline<\/h2>/);
-  assert.match(html, /<h2>AMN connection points at this step<\/h2>/);
+  assert.match(html, /<h2>Language access service connections at this step<\/h2>/);
   for (const stage of stages) assert.doesNotMatch(stage.title, /^\d+\.\s/);
 
   const app = journey();
@@ -105,6 +105,14 @@ test("scenario and journey headings and all stage labels have no numbering prefi
     assert.equal(app.el("stageTitle").textContent, stage.title);
     assert.equal(app.node(index)["aria-label"], stage.title);
   });
+});
+
+test("page title and journey copy use neutral organization and service labels", () => {
+  const userFacingCopy = `${html}\n${source}`;
+  assert.match(html, /<title>Health System \| Patient Journey to Language Access<\/title>/);
+  assert.match(html, /<meta name="description" content="An illustrative patient journey for language access across a health system\."/);
+  assert.match(source, /Health System action:/);
+  assert.doesNotMatch(userFacingCopy, /\b(?:Essentia|AMN|Jaide|EPIC|MyChart)\b/);
 });
 
 test("Abdi's Somali-language journey moves from pregnancy and prenatal care into inpatient maternity care", () => {
@@ -123,7 +131,7 @@ test("Abdi's Somali-language journey moves from pregnancy and prenatal care into
   assert.doesNotMatch(moments.join(" "), /medical advice|diagnos(?:is|ed)/i);
 });
 
-test("every scenario and timeline stage renders details and AMN mappings without the callout", () => {
+test("every scenario and timeline stage renders details and language access mappings without the callout", () => {
   const app = journey();
   personas.forEach((persona, pIndex) => {
     app.el("scenarioGrid").children[pIndex].click();
@@ -156,7 +164,7 @@ test("Maria's connection cards render paired action lines without changing card 
     app.el("connectionGrid").children.forEach((card, cardIndex) => {
       assert.equal(card.children.length, expected[cardIndex].preferred ? 3 : 2);
       assert.equal(card.children.at(-1).textContent, expected[cardIndex].description);
-      assert.match(card.children.at(-1).textContent, /^Patient action: Maria .+\nEssentia action: .+$/);
+      assert.match(card.children.at(-1).textContent, /^Patient action: Maria .+\nHealth System action: .+$/);
       assert.equal(typeof card.handlers.click, expected[cardIndex].externalLink ? "function" : "undefined");
     });
   });
@@ -347,7 +355,7 @@ test("Tran's Telehealth modal shows only the uploaded integrations image without
   assert.equal(asset.readUInt32BE(16), 1536);
   assert.equal(asset.readUInt32BE(20), 1024);
   assert.match(images[0], /width="1536" height="1024"/);
-  assert.match(images[0], /alt="AMN Healthcare Language Services technology interoperability and integrations[^"]+"/);
+  assert.match(images[0], /alt="Technology interoperability and integrations[^"]+"/);
   assert.doesNotMatch(modal, /<video\b|<iframe\b|<object\b|telehealth-category|telehealth-summary|scheduler-controls/);
   const imageStyles = css.match(/\.telehealth-image\s*\{([^}]+)\}/)[1];
   assert.match(imageStyles, /max-width: 100%/);
@@ -449,8 +457,8 @@ test("Maria's VRI/OPI video modal embeds the uploaded MP4 with labelled controls
   assert.match(video, /\bcontrols\b/);
   assert.match(video, /aria-labelledby="vriOpiVideoModalTitle"/);
   assert.doesNotMatch(video, /autoplay/);
-  assert.match(modal, /<source src="public\/media\/amn-ls-interpreter-video-impact-1920x1080-captions-2\.mp4" type="video\/mp4" \/>/);
-  assert.ok(require("node:fs").existsSync(resolve(__dirname, "../public/media/amn-ls-interpreter-video-impact-1920x1080-captions-2.mp4")));
+  assert.match(modal, /<source src="public\/media\/interpreter-access-demo-1920x1080-captions-2\.mp4" type="video\/mp4" \/>/);
+  assert.ok(require("node:fs").existsSync(resolve(__dirname, "../public/media/interpreter-access-demo-1920x1080-captions-2.mp4")));
   assert.match(css, /\.vri-opi-video \{[^}]*aspect-ratio: 16 \/ 9/);
   assert.match(css, /#vriOpiVideoModal \.image-modal-close:focus-visible,/);
 });
@@ -536,17 +544,17 @@ test("VRI/OPI cards for other personas stay informational", () => {
   }
 });
 
-test("Maria's Arrival Jaide AI Live Speech card opens the check-in video by click and keyboard", () => {
+test("Maria's Arrival AI Live Speech Translation card opens the check-in video by click and keyboard", () => {
   const url = "https://www.youtube.com/watch?v=qHtBNM9-cKQ&list=PL2nqsuaL4MUK7ZOcbzFeeTHJ8tJXyDerR&index=3";
   const app = journey();
   app.node(stages.findIndex(({ title }) => title === "Arrival & Check-In")).click();
   const card = app.el("connectionGrid").children.find((c) => c.dataset.solutionId === "jaide-live-speech");
-  assert.equal(card.children[0].textContent, "Jaide AI Live Speech");
+  assert.equal(card.children[0].textContent, "AI Live Speech Translation");
   assert.match(card.className, /connection-preferred/);
   assert.match(card.className, /connection-clickable/);
   assert.equal(card.role, "link");
   assert.equal(card.tabindex, "0");
-  assert.equal(card["aria-label"], "Jaide AI Live Speech: open linked video");
+  assert.equal(card["aria-label"], "AI Live Speech Translation: open linked video");
 
   card.click();
   let prevented = 0;
@@ -560,13 +568,13 @@ test("Maria's Arrival Jaide AI Live Speech card opens the check-in video by clic
   assert.equal(app.state().sIndex, 2);
 });
 
-test("Maria's Discharge Jaide AI Translation card opens the discharge video in a new tab by click and keyboard", () => {
+test("Maria's Discharge AI-assisted Translation card opens the discharge video in a new tab by click and keyboard", () => {
   const url = "https://www.youtube.com/watch?v=NE72LS-x-rs&list=PL2nqsuaL4MUK7ZOcbzFeeTHJ8tJXyDerR&index=2";
   const app = journey();
   app.el("scenarioGrid").children[personas.findIndex(({ id }) => id === "span")].click();
   app.node(stages.findIndex(({ title }) => title === "Discharge & Transition of Care")).click();
   const card = app.el("connectionGrid").children.find((c) => c.dataset.solutionId === "jaide");
-  assert.equal(card.children[0].textContent, "Jaide AI Translation");
+  assert.equal(card.children[0].textContent, "AI-assisted Translation");
   assert.match(card.className, /connection-preferred/);
   assert.match(card.className, /connection-clickable/);
   assert.equal(card.role, "link");
