@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nursing &amp; Allied Staffing | Sales Conversation</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="staffing.css">
+  <script src="staffing.js" defer></script>
+</head>
+<body class="staffing-page">
+  <a class="staffing-skip" href="#staffingConversation">Skip to conversation</a>
+  <header class="topbar staffing-topbar">
+    <div><p class="eyebrow">Workforce conversations</p><h1 class="top-title">Nursing &amp; allied staffing</h1></div>
+    <div class="top-actions">
+      <a class="ghost-btn" href="index.html">Back to home</a>
+      <button class="ghost-btn" id="staffingPresentation" type="button" aria-pressed="false">Presentation view</button>
+      <button class="primary-btn" id="staffingPrint" type="button">Print conversation summary</button>
+    </div>
+  </header>
+  <main>
+    <section class="hero staffing-intro">
+      <p class="eyebrow">Discover → align → review</p>
+      <h2>Start with the staffing need. Build the right next conversation.</h2>
+      <p class="hero-copy">A sales conversation guide, not a staffing order. Explore four fictional situations, uncover operational priorities, and agree on a practical next step with your buyer.</p>
+    </section>
+    <aside class="staffing-safety" aria-label="Privacy and staffing limitations">
+      <strong>Fictional scenarios only. Do not enter PHI, PII, or confidential information.</strong>
+      <p>Notes and action plans stay in this page’s memory only; refreshing or closing loses them. Nothing is saved or sent by this tool. Printing creates a separate copy that you control.</p>
+      <p>Licensing, credentialing, and facility approval are required before placement. Availability, role scope, timing, and commercial terms vary. No fill, compliance, or outcome guarantees are implied.</p>
+    </aside>
+    <section class="panel staffing-scenarios" aria-labelledby="staffingScenarioHeading">
+      <h2 id="staffingScenarioHeading">Choose a fictional staffing conversation</h2>
+      <div class="scenario-grid" id="staffingScenarios"></div>
+    </section>
+    <section class="panel" aria-labelledby="staffingTimelineHeading">
+      <div class="journey-head">
+        <h2 id="staffingTimelineHeading">Sales conversation lifecycle</h2>
+        <div class="controls">
+          <button class="ghost-btn" id="staffingBack" type="button">Back</button>
+          <button class="primary-btn" id="staffingNext" type="button">Next</button>
+          <button class="ghost-btn" id="staffingRestart" type="button">Restart journey</button>
+        </div>
+      </div>
+      <p class="staffing-hint">Restart returns to discovery without clearing notes. Each scenario starts at discovery.</p>
+      <nav class="staffing-timeline" id="staffingTimeline" aria-label="Staffing conversation stages" tabindex="0"></nav>
+    </section>
+    <section class="panel staffing-conversation" id="staffingConversation" aria-labelledby="staffingStageTitle" tabindex="-1">
+      <div class="staffing-stage-heading">
+        <div><p class="phase" id="staffingContext"></p><h2 id="staffingStageTitle"></h2></div>
+        <span class="counter" id="staffingProgress" role="status" aria-live="polite"></span>
+      </div>
+      <p class="staffing-pain" id="staffingPain"></p>
+      <div class="staffing-cards">
+        <article class="connection-card"><h3>Bring into the conversation</h3><p id="staffingStakeholders"></p></article>
+        <article class="connection-card"><h3>Ask before recommending</h3><p id="staffingQuestions"></p></article>
+        <article class="connection-card"><h3>Connect to a staffing approach</h3><p id="staffingSolution"></p></article>
+        <article class="connection-card"><h3>Agree how to measure success</h3><p id="staffingMeasures"></p></article>
+      </div>
+      <div class="staffing-next"><h3>Suggested next step</h3><p id="staffingSuggested"></p></div>
+    </section>
+    <section class="panel staffing-notes" aria-labelledby="staffingNotesHeading">
+      <h2 id="staffingNotesHeading">Capture the sales conversation</h2>
+      <p id="staffingNotesWarning">Session-only notes. No PHI, PII, or confidential information. Refreshing loses all entries.</p>
+      <label id="staffingNotesLabel" for="staffingNotes">Notes for this stage</label>
+      <textarea id="staffingNotes" rows="4" maxlength="8000" aria-describedby="staffingNotesWarning" placeholder="Use fictional or non-sensitive observations, open questions, and agreed follow-ups."></textarea>
+      <label id="staffingActionLabel" for="staffingAction">Scenario action plan</label>
+      <textarea id="staffingAction" rows="3" maxlength="8000" aria-describedby="staffingNotesWarning" placeholder="Agree a non-sensitive next action, responsible role, and target timing."></textarea>
+    </section>
+    <details class="panel staffing-cost" id="staffingCost">
+      <summary>Optional: illustrative weekly staffing cost comparison</summary>
+      <p>Compare the same assumed hours using your own fully loaded rates in USD. This is not a quote, a total workforce business case, or an ROI guarantee. Contingent staffing is not always a savings option.</p>
+      <form id="staffingCostForm">
+        <div class="staffing-cost-inputs">
+          <label for="staffingHours">Hours / week (0–1,000)<input id="staffingHours" type="number" min="0" max="1000" step="any" inputmode="decimal"></label>
+          <label for="staffingWeeks">Weeks (0–104)<input id="staffingWeeks" type="number" min="0" max="104" step="any" inputmode="decimal"></label>
+          <label for="staffingOvertime">Internal overtime fully loaded rate ($ / hour, 0–1,000)<input id="staffingOvertime" type="number" min="0" max="1000" step="any" inputmode="decimal"></label>
+          <label for="staffingContingent">Proposed contingent fully loaded rate ($ / hour, 0–1,000)<input id="staffingContingent" type="number" min="0" max="1000" step="any" inputmode="decimal"></label>
+        </div>
+      </form>
+      <p id="staffingCostResult" role="status" aria-live="polite"></p>
+      <p class="staffing-hint">Difference = contingent minus internal overtime. Positive means higher contingent cost; negative means lower. Confirm rate inclusions, orientation, travel, housing, premiums, cancellation terms, and other costs separately. This model does not estimate capacity or quality outcomes.</p>
+    </details>
+    <details class="panel staffing-summary" id="staffingSummary">
+      <summary>Conversation summary &amp; all entered notes</summary>
+      <div id="staffingSummaryContent"></div>
+    </details>
+    <noscript><p class="panel">Enable JavaScript to explore the scenarios, capture session-only notes, and calculate an illustrative comparison.</p></noscript>
+  </main>
+  <footer>Staffing conversation guide · Fictional examples · Discovery, not a commitment</footer>
+</body>
+</html>
