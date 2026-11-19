@@ -4,6 +4,28 @@ An illustrative patient journey showing how language access services can support
 patients and staff across a health system. The four fictional personas, seven
 stages, solution mappings and demo interactions are retained.
 
+## Nursing and allied staffing sales conversations
+
+Open [the staffing journey](staffing.html) from the patient presenter's header.
+This separate tool retains the patient presenter and applies the journey-mapping
+approach to workforce planning and staffing sales conversations.
+
+- Choose a fictional nursing or allied staffing scenario and walk through seven
+  workforce stages using the timeline or Back/Next.
+- Discuss stage-specific challenges, stakeholders, discovery questions, staffing
+  options, success measures and suggested next steps.
+- Use Presentation Mode for screen sharing and enter optional conversation notes.
+  Notes stay in page memory only and are not saved; refreshing discards them.
+  Do not enter PHI, personal information or confidential client information.
+- Compare illustrative weekly staffing costs using your own assumptions. This is
+  a directional comparison, not a quote, ROI promise or complete cost model.
+- Print or save a conversation summary using the browser's print dialog; treat
+  any saved or printed notes according to your organization's information policy.
+
+All scenarios are illustrative. Availability, scope, licensing, credentialing
+and facility approval must be confirmed; no live staffing integration is added.
+The existing dependency-free test command below also runs the staffing tests.
+
 ## Presenter deployment
 
 If GitHub Pages is enabled for this repository, its expected URL is
